@@ -66,7 +66,7 @@ class ProcessadorJson extends Processador {
         return data.map(linha => {
           const chave = linha[0];
           const valor = linha[1];
-          return { [chave]: valor };
+          return { nome: valor, id: chave };
         }).filter(linha => {
           const chave = Object.keys(linha)[0];
           return chave !== '' && chave !== null && chave !== undefined; // Filtra valores inválidos
