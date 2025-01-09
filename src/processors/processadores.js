@@ -1,5 +1,5 @@
-const { TipoProcessamento } = require('./constants');
-
+const { TipoProcessamento } = require('../constants/constants');
+const { InvalidProcessingError } = require('../error/errors')
 
 /**
  * Classe base abstrata para processadores de dados.
@@ -64,9 +64,9 @@ class ProcessadorJson extends Processador {
     switch (this.tipoProcessamento) {
       case TipoProcessamento.COM_PACKAGE:
         return data.map(linha => {
-          const chave = linha[0];
-          const valor = linha[1];
-          return { nome: valor, id: chave };
+          const nome = linha[0];
+          const id = linha[1];
+          return { nome: nome, id: id };
         }).filter(linha => {
           const chave = Object.keys(linha)[0];
           return chave !== '' && chave !== null && chave !== undefined; // Filtra valores inválidos
@@ -77,7 +77,7 @@ class ProcessadorJson extends Processador {
           .filter(linha => linha && linha.trim() !== '');
 
       default:
-        throw new Error("Tipo de processamento inválido");
+        throw new InvalidProcessingError("Tipo de processamento inválido");
     }
   }
 }

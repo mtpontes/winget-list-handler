@@ -1,7 +1,9 @@
 class Constants {
-  static FOLDER_RESULT_PATH = './testando'
+  static FOLDER_RESULT_PATH = './arquivos_gerados'
   static FORMATOS_DE_ARQUIVO = { json: '.json', txt: '.txt' }
-  static BASE_FILE_PATH = './arquivo_gerado.txt'
+  static BASE_FILE_PATH = './winget_lista.txt'
+  static CAMINHO_DO_ARQUIVO_DE_APPS_COM_PACOTES_GERADO = '../../arquivos_gerados/apps-com-pacotes.json'
+  static CAMINHO_ARQUIVO_BAT = '../exec.bat'
 }
 
 class TipoProcessamento {
@@ -33,4 +35,9 @@ class IdentificadorPadraoTextual {
   static PREJUIZO_DE_PACOTE = '…';
 }
 
-module.exports = { Constants, TipoProcessamento, IdentificadorPadraoTextual }
+class CliArguments {
+  static GENERATE_FILES_ONLY = '--generate-files-only'
+  static CONSUME_FILE_ONLY = '--consume-file-only'
+}
+
+module.exports = { Constants, TipoProcessamento, IdentificadorPadraoTextual, CliArguments}

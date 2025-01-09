@@ -1,6 +1,6 @@
 const fs = require('fs');
-const { Processador, ProcessadorJson } = require('./processadores');
-const { Constants, TipoProcessamento } = require('./constants');
+const { Processador, ProcessadorJson } = require('../processors/processadores');
+const { Constants, TipoProcessamento } = require('../constants/constants');
 
 /**
  * Escreve os dados processados em um arquivo no formato especificado.

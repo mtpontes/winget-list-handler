@@ -1,4 +1,4 @@
-const { Constants, IdentificadorPadraoTextual } = require('./constants')
+const { Constants, IdentificadorPadraoTextual } = require('../constants/constants')
 
 /**
  * Segrega os aplicativos em dois grupos: com pacotes completos e com pacotes ausentes ou prejudicados.
