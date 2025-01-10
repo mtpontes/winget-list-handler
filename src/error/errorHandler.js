@@ -12,7 +12,7 @@ function handle(error) {
       break;
 
     case ArgumentNotFoundError.name:
-      console.log()
+      console.log(error.message)
       break;
 
     case FileNotFoundError.name:

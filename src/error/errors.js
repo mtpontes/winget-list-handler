@@ -18,8 +18,8 @@ class MultipleArgumentsError extends Error {
 class ArgumentNotFoundError extends Error {
   constructor() {
     super(`
-      Argumento inválido.
-      Argumentos permitidos: ${CliArguments.CONSUME_FILE_ONLY}, ${CliArguments.GENERATE_FILES_ONLY}
+      Argumento inválido ou ausente. Informe um argumento válido.
+      Argumentos permitidos: ${CliArguments.GENERATE_FILES_ONLY}, ${CliArguments.CONSUME_FILE_ONLY}
       `);
     this.name = this.constructor.name;
     this.stack = (new Error()).stack;

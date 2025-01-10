@@ -77,7 +77,7 @@ class ProcessadorJson extends Processador {
           .filter(linha => linha && linha.trim() !== '');
 
       default:
-        throw new InvalidProcessingError("Tipo de processamento inválido");
+        throw new InvalidProcessingError();
     }
   }
 }

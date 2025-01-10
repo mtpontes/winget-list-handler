@@ -10,16 +10,10 @@ const {
 
 try {
   if (args.length === 2) {
-    runFluxoCompleto()
-    return
+    throw new ArgumentNotFoundError()
   }
   args = args.slice(2)
   if (args.length > 1) {
-    const logMessage = { 
-      erro: 'Multiplos argumentos não suportado. Passe apenas um argumento.', 
-      message: 'Uso: node index.js <seu-argumento-aqui>'
-    }
-  
     throw new MultipleArgumentsError();
   }
   

@@ -23,12 +23,6 @@ async function iniciarFluxoDeTratamentoDeDados() {
   });
 }
 
-async function runFluxoCompleto() {
-  await geraArquivoDoWinget()
-  await iniciarFluxoDeTratamentoDeDados()
-  await setTimeout(() => instalarPacotes(), 15)
-}
-
 async function runGerarSomenteArquivos() {
   await geraArquivoDoWinget()
   await iniciarFluxoDeTratamentoDeDados()
@@ -38,4 +32,4 @@ async function runConsumirArquivo() {
   await instalarPacotes()
 }
 
-module.exports = { runFluxoCompleto, runGerarSomenteArquivos, runConsumirArquivo }
+module.exports = { runGerarSomenteArquivos, runConsumirArquivo }

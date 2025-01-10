@@ -22,12 +22,11 @@ async function instalarPacotes() {
         console.log('\n')
       }
     } catch (error) {
-      // TODO: Tratar com um log mais amigavel
-      throw new FileNotReadableError('Erro ao ler arquivo', error)
+      throw new FileNotReadableError()
     }
   } catch (error) {
     if (error instanceof FileNotReadableError) throw error
-    throw new FileNotFoundError('Não foi possivel encontrar o arquivo apps-com-pacotes.json. Certifique-se de já ter criado o arquivo anteriormente.', error)
+    throw new FileNotFoundError()
   }
 }
 
