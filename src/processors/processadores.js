@@ -66,11 +66,9 @@ class ProcessadorJson extends Processador {
         return data.map(linha => {
           const nome = linha[0];
           const id = linha[1];
-          return { nome: nome, id: id };
-        }).filter(linha => {
-          const chave = Object.keys(linha)[0];
-          return chave !== '' && chave !== null && chave !== undefined; // Filtra valores inválidos
-        });
+          const version = linha[2] ? linha[2] : null
+          return { 'nome': nome, 'id': id, version: version };
+        }).filter(linha => (linha.nome && linha.nome.trim() !== ''));
 
       case TipoProcessamento.PREJUDICADO:
         return data.map(linha => linha[0])
