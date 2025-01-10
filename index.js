@@ -1,12 +1,8 @@
 let args = process.argv;
-const { runFluxoCompleto, runGerarSomenteArquivos, runConsumirArquivo } = require('./src/app')
+const { runGerarSomenteArquivos, runConsumirArquivo } = require('./src/app')
 const { CliArguments } = require('./src/constants/constants')
 const handle = require('./src/error/errorHandler')
-const { 
-  MultipleArgumentsError, 
-  ArgumentNotFoundError, 
-  FileNotReadableError, 
-  FileNotFoundError } = require('./src/error/errors')
+const { MultipleArgumentsError, ArgumentNotFoundError } = require('./src/error/errors')
 
 try {
   if (args.length === 2) {
