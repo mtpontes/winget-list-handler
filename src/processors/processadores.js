@@ -1,5 +1,4 @@
 const { TipoProcessamento } = require('../constants/constants');
-const { InvalidProcessingError } = require('../error/errors')
 
 /**
  * Classe base abstrata para processadores de dados.
@@ -25,7 +24,7 @@ class Processador {
  * Processador especializado para manipulação e formatação de dados como JSON.
  * 
  * Esta classe estende a funcionalidade da classe base `Processador` e implementa 
- * a lógica para processar dados com base em um tipo específico de processamento.
+ * a lógica para processar os dados relacionados a aplicativos com pacotes disponíveis e prejudicados.
  */
 class ProcessadorJson extends Processador {
   /**
@@ -39,44 +38,39 @@ class ProcessadorJson extends Processador {
   }
 
   /**
-   * Processa os dados fornecidos e os retorna como uma string JSON formatada.
+   * Processa os dados fornecidos e os retorna como strings JSON formatadas.
    * 
-   * @param {Array<Array<string>>} data - Os dados a serem processados. 
-   * Cada linha é representada como um array de strings.
+   * O processamento inclui:
+   * - Para os aplicativos com pacotes disponíveis, cria um array de objetos com `nome`, `id`, e `version`.
+   * - Para os aplicativos prejudicados, cria um array de strings com os nomes dos aplicativos.
    * 
-   * @returns {string} Os dados processados como uma string JSON formatada.
+   * @param {Object} data - Os dados a serem processados.
+   * @param {Array<Array<string>>} data.appsComPackage - Os dados dos aplicativos com pacotes disponíveis.
+   * @param {Array<Array<string>>} data.appsPrejudicados - Os dados dos aplicativos com pacotes prejudicados ou ausentes.
+   * 
+   * @returns {Object} Um objeto com duas propriedades:
+   *   - `processedAppsComPackage`: A lista de aplicativos com pacotes disponíveis em formato JSON.
+   *   - `processedAppsPrejudicados`: A lista de aplicativos prejudicados em formato JSON.
    */
   processar(data) {
-    data = this.executarProcessamentoPorTipo(data);
-    return JSON.stringify(data, null, 2);
-  }
+    let { appsComPackage, appsPrejudicados } = data;
 
-  /**
-   * Executa o processamento dos dados com base no tipo de processamento especificado.
-   * 
-   * @param {Array<Array<string>>} data - Os dados a serem processados.
-   * 
-   * @returns {Array<Object>|Array<string>} Os dados processados:
-   * - Para `TipoProcessamento.COM_PACKAGE`, retorna um array de objetos com chave e valor.
-   * - Para `TipoProcessamento.PREJUDICADO`, retorna um array de strings.
-   */
-  executarProcessamentoPorTipo(data) {
-    switch (this.tipoProcessamento) {
-      case TipoProcessamento.COM_PACKAGE:
-        return data.map(linha => {
-          const nome = linha[0];
-          const id = linha[1];
-          const version = linha[2] ? linha[2] : null
-          return { 'nome': nome, 'id': id, version: version };
-        }).filter(linha => (linha.nome && linha.nome.trim() !== ''));
+    // Processamento de aplicativos com pacotes disponíveis
+    appsComPackage = appsComPackage.map(linha => {
+      const nome = linha[0];
+      const id = linha[1];
+      const version = linha[2] ? linha[2] : null;
+      return { 'nome': nome, 'id': id, version: version };
+    }).filter(linha => (linha.nome && linha.nome.trim() !== ''));
 
-      case TipoProcessamento.PREJUDICADO:
-        return data.map(linha => linha[0])
-          .filter(linha => linha && linha.trim() !== '');
+    // Processamento de aplicativos prejudicados
+    appsPrejudicados = appsPrejudicados.map(linha => linha[0])
+      .filter(linha => linha && linha.trim() !== '');
 
-      default:
-        throw new InvalidProcessingError();
-    }
+    const processedAppsComPackage = JSON.stringify(appsComPackage, null, 2);
+    const processedAppsPrejudicados = JSON.stringify(appsPrejudicados, null, 2);
+
+    return { processedAppsComPackage, processedAppsPrejudicados };
   }
 }
 

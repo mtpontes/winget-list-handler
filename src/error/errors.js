@@ -30,20 +30,6 @@ class ArgumentNotFoundError extends Error {
   }
 }
 
-class InvalidProcessingError extends Error {
-  constructor() {
-    super(`
-      Tipo de processamento invalido
-      `);
-    this.name = this.constructor.name;
-    this.stack = (new Error()).stack;
-  }
-
-  toString() {
-    return `${this.name}: ${this.message}`;
-  }
-}
-
 class FileNotFoundError extends Error {
   constructor() {
     super(`
@@ -73,4 +59,24 @@ class FileNotReadableError extends Error {
   }
 }
 
-module.exports = { MultipleArgumentsError, ArgumentNotFoundError, InvalidProcessingError, FileNotReadableError, FileNotFoundError }
+class FileNotSupportedError extends Error {
+  constructor() {
+    super(`
+      Formato de arquivo não suportado.
+      `);
+    this.name = this.constructor.name;
+    this.stack = (new Error()).stack;
+  }
+
+  toString() {
+    return `${this.name}: ${this.message}`;
+  }
+}
+
+module.exports = {
+  MultipleArgumentsError,
+  ArgumentNotFoundError,
+  FileNotReadableError,
+  FileNotFoundError,
+  FileNotSupportedError
+}

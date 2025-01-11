@@ -1,9 +1,12 @@
 class Constants {
   static FOLDER_RESULT_PATH = './arquivos_gerados'
-  static FORMATOS_DE_ARQUIVO = { json: '.json', txt: '.txt' }
   static BASE_FILE_PATH = './winget_lista.txt'
   static CAMINHO_DO_ARQUIVO_DE_APPS_COM_PACOTES_GERADO = '../../arquivos_gerados/apps-com-pacotes.json'
   static CAMINHO_ARQUIVO_BAT = '../exec.bat'
+}
+
+class FormatoDeArquivo {
+  static JSON = '.json'
 }
 
 class TipoProcessamento {
@@ -40,4 +43,10 @@ class CliArguments {
   static CONSUME_FILE_ONLY = '--consume-file-only'
 }
 
-module.exports = { Constants, TipoProcessamento, IdentificadorPadraoTextual, CliArguments}
+module.exports = {
+  Constants,
+  FormatoDeArquivo,
+  TipoProcessamento,
+  IdentificadorPadraoTextual,
+  CliArguments
+}
