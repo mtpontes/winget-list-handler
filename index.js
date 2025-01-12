@@ -38,16 +38,11 @@ function run() {
 
       case CliArguments.CONSUME_FILE_ONLY:
         if (args.length > 1) {
-          if (args[1] === CliArguments.IS_ASYNC_TRUE) {
+          if (args[1] === CliArguments.IS_ASYNC) {
             runConsumirArquivo({ isAsync: true });
             return
           }
-          if (args[1] === CliArguments.IS_ASYNC_FALSE) {
-            runConsumirArquivo({ isAsync: false });
-            return
-          } else {
-            throw new ArgumentNotFoundError();
-          }
+          throw new ArgumentNotFoundError();
         }
         runConsumirArquivo({ isAsync: false });
         break;

@@ -41,8 +41,7 @@ class IdentificadorPadraoTextual {
 class CliArguments {
   static GENERATE_FILES_ONLY = '--generate-files-only'
   static CONSUME_FILE_ONLY = '--consume-file-only'
-  static IS_ASYNC_TRUE = '--is-async=true'
-  static IS_ASYNC_FALSE = '--is-async=false'
+  static IS_ASYNC = '--async'
 }
 
 module.exports = {
