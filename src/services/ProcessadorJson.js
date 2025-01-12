@@ -16,11 +16,9 @@ class ProcessadorJson {
    *
    * @example
    * // Exemplo de entrada:
-   * const data = `
-   * Nome                  ID                       Versão      Origem
+   * const data = `Nome                  ID                       Versão      Origem
    * --------------------------------------------------------------
-   * GIMP 2.10.38          XPDM27W10192Q0          2.10.38      msstore
-   * `;
+   * GIMP 2.10.38          XPDM27W10192Q0          2.10.38      msstore`;
    *
    * const result = estruturarDadosDeLeitura(data);
    * console.log(result);
@@ -34,8 +32,8 @@ class ProcessadorJson {
     const indiceDeComecoDosDadosUteis = data.findIndex((linha) =>
       linha.includes("ID")
     );
-    data = data.slice(indiceDeComecoDosDadosUteis + 2); // Pula a linha das colunas e pula a linha que separa as colunas das linhas
-    return data.map((linha) => linha.split(/\s{2,}/)); // Quebra cada texto com mais de dois espaços em uma lista de Strings
+    data = data.slice(indiceDeComecoDosDadosUteis + 2); // Pula a linha das colunas e a linha de separação
+    return data.map((linha) => linha.split(/\s{2,}/)); // Quebra cada texto com mais de dois espaços em uma lista de strings
   }
 
   /**
@@ -74,20 +72,47 @@ class ProcessadorJson {
     const appsComPackage = data.filter(linha => linha.every(coluna =>
       !coluna.trim().includes(IdentificadorPadraoTextual.AUSENCIA_DE_PACOTE) &&
       !coluna.trim().includes(IdentificadorPadraoTextual.PREJUIZO_DE_PACOTE))
-    )
+    );
 
     const appsPrejudicados = data.filter(linha => linha.some(texto =>
       texto.includes(IdentificadorPadraoTextual.PREJUIZO_DE_PACOTE) ||
       texto.includes(IdentificadorPadraoTextual.AUSENCIA_DE_PACOTE))
-    )
+    );
 
-    data = null
-    return { appsComPackage, appsPrejudicados }
+    data = null;
+    return { appsComPackage, appsPrejudicados };
   }
 
+  /**
+   * Processa os dados para gerar um objeto JSON com informações estruturadas dos aplicativos.
+   *
+   * A função utiliza os métodos internos `#estruturarDadosDeLeitura` e `#segregarTiposDeApps` para processar os dados brutos
+   * e separar os aplicativos em duas categorias: com pacotes completos e prejudicados. Em seguida, estrutura esses dados em
+   * objetos que são convertidos para JSON.
+   *
+   * @param {string} data - A string de dados de entrada contendo informações dos aplicativos.
+   *
+   * @returns {Object} Um objeto contendo dois campos:
+   * - `processedAppsComPackage`: Um JSON com aplicativos com pacotes completos.
+   * - `processedAppsPrejudicados`: Um JSON com aplicativos prejudicados.
+   *
+   * @example
+   * const data = `Nome                  ID                       Versão      Origem
+   * --------------------------------------------------------------
+   * GIMP 2.10.38          XPDM27W10192Q0          2.10.38      msstore
+   * ...`;
+   * const processor = new ProcessadorJson();
+   * const result = processor.processarParaJson(data);
+   * console.log(result);
+   * // Saída:
+   * // {
+   * //   processedAppsComPackage: '[{"nome":"GIMP 2.10.38","id":"XPDM27W10192Q0","version":"2.10.38"}]',
+   * //   processedAppsPrejudicados: '["App2", "App3"]'
+   * // }
+   */
   processarParaJson(data) {
-    let structuredData = this.#estruturarDadosDeLeitura(data)
-    let { appsComPackage, appsPrejudicados } = this.#segregarTiposDeApps(structuredData)
+    let structuredData = this.#estruturarDadosDeLeitura(data);
+    let { appsComPackage, appsPrejudicados } = this.#segregarTiposDeApps(structuredData);
 
     // Processamento de aplicativos com pacotes disponíveis
     appsComPackage = appsComPackage
@@ -106,11 +131,11 @@ class ProcessadorJson {
 
     const processedAppsComPackage = JSON.stringify(appsComPackage, null, 2);
     const processedAppsPrejudicados = JSON.stringify(appsPrejudicados, null, 2);
-    appsComPackage = null
-    appsPrejudicados = null
+    appsComPackage = null;
+    appsPrejudicados = null;
 
     return { processedAppsComPackage, processedAppsPrejudicados };
   }
 }
 
-module.exports = ProcessadorJson
+module.exports = ProcessadorJson;

@@ -7,6 +7,15 @@ const {
   FileNotFoundError,
 } = require('../error/errors');
 
+/**
+ * Installs the packages listed in the JSON file by executing a batch file command for each package.
+ * 
+ * @param {Object} options - Options for the package installation.
+ * @param {boolean} [options.isAsync=false] - Whether to execute the installation commands asynchronously.
+ * 
+ * @throws {FileNotFoundError} If the file containing the list of packages is not found.
+ * @throws {FileNotReadableError} If the file containing the list of packages cannot be read.
+ */
 async function instalarPacotes({ isAsync = false }) {
   try {
     const filePath = path.resolve(__dirname, Constants.CAMINHO_DO_ARQUIVO_DE_APPS_COM_PACOTES_GERADO);

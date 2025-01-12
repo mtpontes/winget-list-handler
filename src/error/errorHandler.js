@@ -1,4 +1,3 @@
-const { CliArguments } = require('../constants/constants')
 const {
   MultipleArgumentsError,
   ArgumentNotFoundError,
