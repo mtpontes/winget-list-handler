@@ -1,49 +1,60 @@
 # Winget List Handler
 
+## 🔎 About
 
-## 🔎 Sobre
+This project was created to solve the tedious process of installing applications one by one after formatting your system. It uses Winget to handle the installation process and to generate a list of all the app packages installed on your Windows machine (not limited to apps installed via Winget).
 
-Este projeto foi criado para resolver aquele processo chato de instalar app por app após formatar o sistema. Ele utiliza winget para fazer o processo de instalação e também para obter uma lista com todos os pacotes de apps instalados na sua maquina Windows (não se limita a apps instalados via winget).
+The purpose of this project is to automate the installation of your applications on a formatted system and generate a report of apps that couldn't be installed automatically—giving you a clear idea of what remains to be installed.
 
-A ideia do projeto é automatizar a instalação dos seus aplicativos no sistema formatado e também gerar um relatório de apps que não foi possível automatizar a instalação - permitindo que você tenha noção de o que ainda falta instalar.
+- First, you generate files with references to your apps BEFORE formatting.
+- Then, you run the automation to install the apps.
 
-- Primeiro você roda a geração dos arquivos com as referências dos seus apps ANTES de formatar.
-- Depois você roda apenas a automação de instalação dos apps.
+<details><summary><h2>🚀 How to Use</h2></summary>
 
-<details><summary><h2>🚀 Como usar</h2></summary>
+### Prerequisites
 
-### Pré-requisitos
-
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
-### Passo a passo
+### Step-by-Step
 
-1. Antes de formatar sua maquina, gere os relatórios de apps. 
-    - Esses relatórios são a lista processada de programas instalados na sua maquina atual.
-    - Nesse processo são gerados dois arquivos: apps-com-pacotes.json, apps-prejudicados.json.
-      - **apps-com-pacotes.json:** Esse é o arquivo principal para a automatização de instalação de apps. Ele já foi processado e possui como conteúdo apenas apps instalaveis via winget.
-      - **app-prejudicados.json:** Esse é uma lista de todos os apps que não poderão ser instalados via winget. São apps que não possuem pacote publicado no winget ou possuem algum erro de formatação causado pela saída do comando `winget list`.
-    - O diretório dos arquivos gerados por esta etapa localiza-se na raíz do projeto e é criado ao executa-lo.
+1.  Before formatting your machine, generate the app reports.
 
-    Execute os comando na raíz do projeto.
+    - These reports are the processed list of programs installed on your current machine.
+    - Two files will be generated during this process: `apps-com-pacotes.json` and `apps-prejudicados.json`.
+      - **apps-com-pacotes.json:** This is the main file for automating app installations. It is already processed and contains only apps that can be installed via Winget.
+      - **apps-prejudicados.json:** This is a list of all apps that cannot be installed via Winget. These are apps without a published Winget package or those with formatting errors caused by the output of the `winget list` command.
+    - The directory containing the generated files is located in the root of the project and is created when executed.
 
-    Instale as dependências do projeto
+    Run the commands in the root of the project.
+
+    Install the project dependencies:
 
         npm install -y
 
-    Execute a criação dos relatórios
-        
+    Generate the reports:
+
         node index.js --generate-files-only
 
-2. Após gerados os arquivos, copie o diretório *arquivos_gerados* - ou o projeto inteiro - e mantenha-o em um local seguro contra formatação.
-    - Sinta-se livre para ajustar o *apps-com-pacotes.json*, remova o que você bem quiser, mas cuidado para não quebrar a formatação do json.
-3. Agora na sua máquina formatada, clone o projeto novamente e cole o diretório *arquivos_gerados* na raíz do projeto - ou apenas traga a sua cópia completa do projeto para a máquina - e rode a automatização de instalação de apps.
+2.  After generating the files, copy the `_arquivos_gerados_` directory—or the entire project—and keep it in a safe place to avoid losing it during formatting.
+    - Feel free to adjust the `apps-com-pacotes.json` file, removing entries as needed, but be careful not to break the JSON format.
+3.  On your formatted machine, clone the project again and paste the `_arquivos_gerados_` directory into the root of the project—or bring your complete project backup—and run the automation to install the apps.
 
-    Utilize o seguinte comando no terminal na raíz do projeto:
+        Use the following command in the project root:
 
-        node index.js --consume-file-only
+            node index.js --consume-file-only
 
-    Após isso basta aguardar o termino do processo. 
-        
-    Esse processo pode demorar, pois depende da velocidade dos servidores dos pacotes.
+        Each package will be installed one at a time synchronously.
+
+        To install packages asynchronously, use the command:
+
+            node index.js --consume-file-only --async
+
+        After that, just wait for the process to complete.
+
+        The synchronous installation can take a long time but uses minimal processing, RAM, and disk writing. The asynchronous installation is much faster but is not yet optimized. As a result, it can demand significant processing, RAM, and disk writing if a large number of apps need to be installed. Avoid using it on legacy computers.
+
+        This process may take some time, as it depends on the speed of the package servers.
+
+    </details>
