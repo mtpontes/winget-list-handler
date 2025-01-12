@@ -7,7 +7,7 @@ const {
   FileNotFoundError,
 } = require('../error/errors');
 
-async function instalarPacotes() {
+async function instalarPacotes({ isAsync = false }) {
   try {
     const filePath = path.resolve(__dirname, Constants.CAMINHO_DO_ARQUIVO_DE_APPS_COM_PACOTES_GERADO);
 
@@ -19,7 +19,7 @@ async function instalarPacotes() {
         const command = `${Constants.CAMINHO_ARQUIVO_BAT} ${packages[index].id}`;
         console.log(command);
 
-        shell.exec(command.slice(3), { silent: false });
+        shell.exec(command.slice(3), { silent: false, async: isAsync });
         console.log('\n');
       }
     } catch (error) {

@@ -18,8 +18,8 @@ function runGerarSomenteArquivos() {
   )
 }
 
-async function runConsumirArquivo() {
-  await instalarPacotes();
+async function runConsumirArquivo({ isAsync = false }) {
+  await instalarPacotes({ isAsync: isAsync });
 }
 
 module.exports = { runGerarSomenteArquivos, runConsumirArquivo };

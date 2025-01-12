@@ -27,7 +27,7 @@ function run() {
       throw new ArgumentNotFoundError();
     }
     args = args.slice(2);
-    if (args.length > 1) {
+    if (args.length > 2) {
       throw new MultipleArgumentsError();
     }
 
@@ -37,7 +37,19 @@ function run() {
         break;
 
       case CliArguments.CONSUME_FILE_ONLY:
-        runConsumirArquivo();
+        if (args.length > 1) {
+          if (args[1] === CliArguments.IS_ASYNC_TRUE) {
+            runConsumirArquivo({ isAsync: true });
+            return
+          }
+          if (args[1] === CliArguments.IS_ASYNC_FALSE) {
+            runConsumirArquivo({ isAsync: false });
+            return
+          } else {
+            throw new ArgumentNotFoundError();
+          }
+        }
+        runConsumirArquivo({ isAsync: false });
         break;
 
       default:
