@@ -41,20 +41,20 @@ The purpose of this project is to automate the installation of your applications
     - Feel free to adjust the `apps-com-pacotes.json` file, removing entries as needed, but be careful not to break the JSON format.
 3.  On your formatted machine, clone the project again and paste the `_arquivos_gerados_` directory into the root of the project—or bring your complete project backup—and run the automation to install the apps.
 
-        Use the following command in the project root:
+    Use the following command in the project root:
 
-            node index.js --consume-file-only
+        node index.js --consume-file-only
 
-        Each package will be installed one at a time synchronously.
+    Each package will be installed one at a time synchronously.
 
-        To install packages asynchronously, use the command:
+    To install packages asynchronously, use the command:
 
-            node index.js --consume-file-only --async
+        node index.js --consume-file-only --async
 
-        After that, just wait for the process to complete.
+    After that, just wait for the process to complete.
 
-        The synchronous installation can take a long time but uses minimal processing, RAM, and disk writing. The asynchronous installation is much faster but is not yet optimized. As a result, it can demand significant processing, RAM, and disk writing if a large number of apps need to be installed. Avoid using it on legacy computers.
+    The synchronous installation can take a long time but uses minimal processing, RAM, and disk writing. The asynchronous installation is much faster but is not yet optimized. As a result, it can demand significant processing, RAM, and disk writing if a large number of apps need to be installed. Avoid using it on legacy computers.
 
-        This process may take some time, as it depends on the speed of the package servers.
+    This process may take some time, as it depends on the speed of the package servers.
 
     </details>
