@@ -4,7 +4,7 @@
 
 This project was created to solve the tedious process of installing applications one by one after formatting your system. It uses Winget to handle the installation process and to generate a list of all the app packages installed on your Windows machine (not limited to apps installed via Winget).
 
-The purpose of this project is to automate the installation of your applications on a formatted system and generate a report of apps that couldn't be installed automatically—giving you a clear idea of what remains to be installed.
+The goal of this project is to automate the installation of your applications on a formatted system and generate a report of applications that could not be installed automatically, giving you a clear idea of ​​what still needs to be installed.
 
 - First, you generate files with references to your apps BEFORE formatting.
 - Then, you run the automation to install the apps.
