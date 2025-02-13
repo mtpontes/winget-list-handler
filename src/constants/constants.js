@@ -1,6 +1,8 @@
 class Constants {
+  static BARRA = '/'
   static FOLDER_RESULT_PATH = './arquivos_gerados'
-  static BASE_FILE_PATH = './winget_lista.txt'
+  static TXT_FILE_NAME = 'winget_lista.txt'
+  static TXT_BASE_FILE_PATH = './'
   static CAMINHO_DO_ARQUIVO_DE_APPS_COM_PACOTES_GERADO = '../../arquivos_gerados/apps-com-pacotes.json'
   static CAMINHO_ARQUIVO_BAT = '../exec.bat'
 }

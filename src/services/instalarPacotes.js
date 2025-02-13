@@ -2,10 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
 const { Constants } = require('../constants/constants');
-const {
-  FileNotReadableError,
-  FileNotFoundError,
-} = require('../error/errors');
+const { FileNotReadableError, FileNotFoundError } = require('../error/errors');
 
 /**
  * Installs the packages listed in the JSON file by executing a batch file command for each package.
@@ -24,8 +21,8 @@ async function instalarPacotes({ isAsync = false }) {
       const content = fs.readFileSync(filePath, 'utf-8');
       const packages = JSON.parse(content); // Converte o JSON string para objeto
 
-      for (let index = 0; index < packages.length; index++) {
-        const command = `${Constants.CAMINHO_ARQUIVO_BAT} ${packages[index].id}`;
+      for (const pkg of packages) {
+        const command = `${Constants.CAMINHO_ARQUIVO_BAT} ${pkg.id}`;
         console.log(command);
 
         shell.exec(command.slice(3), { silent: false, async: isAsync });

@@ -1,21 +1,21 @@
 const instalarPacotes = require('./services/instalarPacotes');
-const { FormatoDeArquivo } = require('./constants/constants');
 const FileUtils = require('./utils/FileUtils')
-const ProcessadorJson = require('./services/ProcessadorJson')
+const FormatadorJson = require('./services/ProcessadorJson');
+const ProcessadorDeDados = require('./services/ProcessadorDeDados');
+
+const processador = new ProcessadorDeDados();
+const formatadorJson = new FormatadorJson();
 
 function runGerarSomenteArquivos() {
   FileUtils.geraArquivoDoWinget()
   FileUtils.criarPastaDeDespejo()
-  let {
-    processedAppsComPackage,
-    processedAppsPrejudicados
-  } = new ProcessadorJson().processarParaJson(FileUtils.readFile())
+  const wingetListFileData = FileUtils.readWingetListFile()
 
-  FileUtils.gravarRelatoriosJson(
-    processedAppsComPackage,
-    processedAppsPrejudicados,
-    FormatoDeArquivo.JSON
-  )
+  let { appsComPackage, appsPrejudicados } = processador.processar(wingetListFileData)
+  let formatedAppsComPackage = formatadorJson.formatarAppsComPackage(appsComPackage)
+  let formatedAppsPrejudicados = formatadorJson.formatarAppsPrejudicados(appsPrejudicados)
+
+  FileUtils.gravarRelatoriosJson(formatedAppsComPackage, formatedAppsPrejudicados)
 }
 
 async function runConsumirArquivo({ isAsync = false }) {

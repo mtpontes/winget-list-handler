@@ -1,53 +1,50 @@
 const fs = require('fs');
 const shelljs = require('shelljs');
-const { Constants, TipoProcessamento } = require('../constants/constants');
+const { Constants, TipoProcessamento, FormatoDeArquivo } = require('../constants/constants');
 
 /**
- * Utility class for handling file operations related to the Winget list handler.
+ * Classe de utilidade para lidar com operações de arquivo relacionadas ao manipulador da lista do Winget.
  */
 class FileUtils {
 
   /**
-   * Creates the directory for dumping output files if it doesn't already exist.
+   * Cria o diretório para despejar arquivos de saída se ainda não existir.
    */
   static criarPastaDeDespejo() {
-    const path = Constants.FOLDER_RESULT_PATH;
-    if (!fs.existsSync(path))
-      fs.mkdirSync(path, { recursive: true });
+    const path = Constants.FOLDER_RESULT_PATH
+    if (!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
   }
 
   /**
-   * Generates a file containing the list of installed apps using Winget.
-   * The output is saved to the base file path defined in the constants.
+   * Gera um arquivo que contém a lista de aplicativos instalados usando o Winget.
+   * A saída é salva no caminho do arquivo base definido nas constantes.
    */
   static geraArquivoDoWinget() {
-    shelljs.exec(`winget list > ${Constants.BASE_FILE_PATH.slice(2)}`);
+    shelljs.exec(`winget list > ${Constants.TXT_FILE_NAME}`);
   }
 
   /**
-   * Reads the Winget output file and returns its content as a string.
+   * Lê o arquivo de saída Winget e retorna seu conteúdo como uma string.
    * 
-   * @returns {string} The content of the Winget output file.
+   * @returns {string} O conteúdo do arquivo de saída Winget.
    */
-  static readFile() {
-    return fs.readFileSync(Constants.BASE_FILE_PATH, 'utf8');
+  static readWingetListFile() {
+    return fs.readFileSync(Constants.TXT_BASE_FILE_PATH.concat(Constants.TXT_FILE_NAME), 'utf8');
   }
 
   /**
-   * Saves the processed app data into JSON report files.
+   * Salva os dados do aplicativo processado nos arquivos de relatório JSON.
    * 
-   * @param {string} processedAppsComPackage - The JSON string of apps with Winget packages.
-   * @param {string} processedAppsPrejudicados - The JSON string of apps without Winget packages or with issues.
-   * @param {string} formatoDeArquivo - The file format extension (e.g., `.json`).
+   * @param {string} processedAppsComPackage - A sequência JSON de aplicativos com pacotes Winget.
+   * @param {string} processedAppsPrejudicados - A sequência JSON de aplicativos sem pacotes Winget ou com problemas.
    */
-  static gravarRelatoriosJson(processedAppsComPackage, processedAppsPrejudicados, formatoDeArquivo) {
-    let outpupath_comPackage =
-      Constants.FOLDER_RESULT_PATH + '/' + TipoProcessamento.COM_PACKAGE + formatoDeArquivo;
-    let outpupath_prejudicados =
-      Constants.FOLDER_RESULT_PATH + '/' + TipoProcessamento.PREJUDICADO + formatoDeArquivo;
+  static gravarRelatoriosJson(processedAppsComPackage, processedAppsPrejudicados) {
+    fs.writeFileSync(this.#criaOutputPathJson(TipoProcessamento.COM_PACKAGE), processedAppsComPackage);
+    fs.writeFileSync(this.#criaOutputPathJson(TipoProcessamento.PREJUDICADO), processedAppsPrejudicados);
+  }
 
-    fs.writeFileSync(outpupath_comPackage, processedAppsComPackage);
-    fs.writeFileSync(outpupath_prejudicados, processedAppsPrejudicados);
+  static #criaOutputPathJson(tipoProcessamento) {
+    return Constants.FOLDER_RESULT_PATH + Constants.BARRA + tipoProcessamento + FormatoDeArquivo.JSON;
   }
 }
 
