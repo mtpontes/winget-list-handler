@@ -2,38 +2,54 @@ const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
 const { Constants } = require('../constants/constants');
-const { FileNotReadableError, FileNotFoundError } = require('../error/errors');
+const { FileNotReadableError } = require('../error/errors');
 
 /**
- * Installs the packages listed in the JSON file by executing a batch file command for each package.
+ * Recupera os pacotes instalados do aplicativo.
  * 
- * @param {Object} options - Options for the package installation.
- * @param {boolean} [options.isAsync=false] - Whether to execute the installation commands asynchronously.
+ * @summary Recupera a lista de pacotes que foram gerados para o aplicativo.
  * 
- * @throws {FileNotFoundError} If the file containing the list of packages is not found.
- * @throws {FileNotReadableError} If the file containing the list of packages cannot be read.
+ * @description Este método lê um arquivo contendo as informações dos pacotes gerados pelo processo de build ou deploy e retorna essas informações como uma objeto JSON.
+ * 
+ * @returns {Object} Um objeto contendo as especificações dos pacotes.
+ * 
+ * @throws {Error} Se o arquivo não pode ser lido, um erro FileNotReadableError será lançado.
+ * 
+ * @param {string} CAMINHO_DO_ARQUIVO_DE_APPS_COM_PACOTES_GERADO - Caminho absoluto do arquivo que contém os pacotes gerados.
+ * @param {string} UTF_8 - Codificação de caractere a ser usada ao ler o arquivo (Unicode Transfer Encoding).
+ */
+function getPackages() {
+  let filePath = null;
+  try {
+    filePath = path.resolve(Constants.CAMINHO_DO_ARQUIVO_DE_APPS_COM_PACOTES_GERADO);
+    packagesString = fs.readFileSync(filePath, Constants.UTF_8);
+    return JSON.parse(packagesString); // Converte o JSON string para objeto
+
+  } catch (error) {
+    throw new FileNotReadableError(filePath);
+  }
+}
+
+/**
+ * Instala os pacotes listados em um arquivo JSON executando comandos de arquivo Batch para cada pacote.
+ *
+ * @param {Object} options - Opções para a instalação dos pacotes.
+ * @param {boolean} [options.isAsync=false] - Booleano indicando se os comandos de instalação devem ser executados assim que possível.
+ *
+ * @returns {void} - Realiza o processo de instalação dos pacotes.
+ *
+ * @throws {FileNotFoundError} Se o arquivo JSON contendo os pacotes não foi encontrado.
+ * @throws {FileNotReadableError} Se o arquivo JSON não pode ser lido.
+ * @asynchronous
  */
 async function instalarPacotes({ isAsync = false }) {
-  try {
-    const filePath = path.resolve(__dirname, Constants.CAMINHO_DO_ARQUIVO_DE_APPS_COM_PACOTES_GERADO);
+  const packages = getPackages();
 
-    try {
-      const content = fs.readFileSync(filePath, 'utf-8');
-      const packages = JSON.parse(content); // Converte o JSON string para objeto
-
-      for (const pkg of packages) {
-        const command = `${Constants.CAMINHO_ARQUIVO_BAT} ${pkg.id}`;
-        console.log(command);
-
-        shell.exec(command.slice(3), { silent: false, async: isAsync });
-        console.log('\n');
-      }
-    } catch (error) {
-      throw new FileNotReadableError();
-    }
-  } catch (error) {
-    if (error instanceof FileNotReadableError) throw error;
-    throw new FileNotFoundError();
+  for (const pkg of packages) {
+    const command = `${Constants.CAMINHO_ARQUIVO_BAT} ${pkg.id}`;
+    console.log(command);
+    shell.exec(command.slice(3), { silent: false, async: isAsync });
+    console.log('\n');
   }
 }
 

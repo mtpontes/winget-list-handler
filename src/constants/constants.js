@@ -1,4 +1,5 @@
 class Constants {
+  static UTF_8 = 'uft8'
   static BARRA = '/'
   static FOLDER_RESULT_PATH = './arquivos_gerados'
   static TXT_FILE_NAME = 'winget_lista.txt'

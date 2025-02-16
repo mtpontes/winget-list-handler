@@ -30,25 +30,10 @@ class ArgumentNotFoundError extends Error {
   }
 }
 
-class FileNotFoundError extends Error {
-  constructor() {
-    super(`
-      Não foi possivel encontrar o arquivo apps-com-pacotes.json. 
-      Certifique-se de já ter criado o arquivo anteriormente.
-      `);
-    this.name = this.constructor.name;
-    this.stack = (new Error()).stack;
-  }
-
-  toString() {
-    return `${this.name}: ${this.message}`;
-  }
-}
-
 class FileNotReadableError extends Error {
-  constructor() {
+  constructor(filePath) {
     super(`
-      Erro ao ler arquivo
+      Erro ao ler arquivo ${filePath}. O arquivo não é legível ou não existe.
       `);
     this.name = this.constructor.name;
     this.stack = (new Error()).stack;
@@ -77,6 +62,5 @@ module.exports = {
   MultipleArgumentsError,
   ArgumentNotFoundError,
   FileNotReadableError,
-  FileNotFoundError,
   FileNotSupportedError
 }

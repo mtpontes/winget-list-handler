@@ -1,8 +1,7 @@
 const {
   MultipleArgumentsError,
   ArgumentNotFoundError,
-  FileNotReadableError,
-  FileNotFoundError } = require('./errors')
+  FileNotReadableError } = require('./errors')
 
 function handle(error) {
   switch (error.name) {
@@ -11,10 +10,6 @@ function handle(error) {
       break;
 
     case ArgumentNotFoundError.name:
-      console.log(error.message)
-      break;
-
-    case FileNotFoundError.name:
       console.log(error.message)
       break;
 

@@ -29,7 +29,7 @@ class FileUtils {
    * @returns {string} O conteúdo do arquivo de saída Winget.
    */
   static readWingetListFile() {
-    return fs.readFileSync(Constants.TXT_BASE_FILE_PATH.concat(Constants.TXT_FILE_NAME), 'utf8');
+    return fs.readFileSync(Constants.TXT_BASE_FILE_PATH.concat(Constants.TXT_FILE_NAME), Constants.UTF_8);
   }
 
   /**
