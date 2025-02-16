@@ -9,14 +9,11 @@ const { FileNotReadableError } = require('../error/errors');
  * 
  * @summary Recupera a lista de pacotes que foram gerados para o aplicativo.
  * 
- * @description Este método lê um arquivo contendo as informações dos pacotes gerados pelo processo de build ou deploy e retorna essas informações como uma objeto JSON.
+ * @description Este método lê o arquivo `apps-com-pacotes.json` e retorna essas informações como uma objeto JSON.
  * 
  * @returns {Object} Um objeto contendo as especificações dos pacotes.
  * 
  * @throws {Error} Se o arquivo não pode ser lido, um erro FileNotReadableError será lançado.
- * 
- * @param {string} CAMINHO_DO_ARQUIVO_DE_APPS_COM_PACOTES_GERADO - Caminho absoluto do arquivo que contém os pacotes gerados.
- * @param {string} UTF_8 - Codificação de caractere a ser usada ao ler o arquivo (Unicode Transfer Encoding).
  */
 function getPackages() {
   let filePath = null;
@@ -37,8 +34,6 @@ function getPackages() {
  * @param {boolean} [options.isAsync=false] - Booleano indicando se os comandos de instalação devem ser executados assim que possível.
  *
  * @returns {void} - Realiza o processo de instalação dos pacotes.
- *
- * @throws {FileNotFoundError} Se o arquivo JSON contendo os pacotes não foi encontrado.
  * @throws {FileNotReadableError} Se o arquivo JSON não pode ser lido.
  * @asynchronous
  */
