@@ -1,58 +1,76 @@
 # Winget List Handler
 
-## 🔎 Sobre
+## 🔎 Sobre  
 
-Este projeto foi criado para resolver aquele processo chato de instalar app por app após formatar o sistema. Ele utiliza winget para fazer o processo de instalação e também para obter uma lista com todos os pacotes de apps instalados na sua maquina Windows (não se limita a apps instalados via winget).
+Este projeto automatiza o processo de reinstalação de aplicativos após formatar o sistema. Utilizando o **winget**, ele permite gerar um relatório com todos os aplicativos instalados no Windows (incluindo aqueles que **não** foram instalados via winget) e facilita a reinstalação automática dos apps compatíveis.  
 
-A ideia do projeto é automatizar a instalação dos seus aplicativos no sistema formatado e também gerar um relatório de apps que não foi possível automatizar a instalação - permitindo que você tenha noção de o que ainda falta instalar.
+Além disso, caso algum aplicativo não possa ser instalado automaticamente, o projeto gera um relatório indicando quais apps ainda precisam ser instalados manualmente.  
 
-- Primeiro você roda a geração dos arquivos com as referências dos seus apps ANTES de formatar.
-- Depois você roda apenas a automação de instalação dos apps.
+### 📌 Como funciona?  
+
+1️⃣ **Antes de formatar**: gere os arquivos de referência com a lista de aplicativos instalados.  
+2️⃣ **Depois de formatar**: utilize a automação para reinstalar os apps.  
+
+---
 
 <details><summary><h2>🚀 Como usar</h2></summary>
 
-### Pré-requisitos
+### ⚙️ Pré-requisitos  
 
-![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+- ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)  
+- ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)  
+- ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)  
 
-### Passo a passo
+---
 
-1.  Antes de formatar sua maquina, gere os relatórios de apps.
+### 📌 Passo a passo  
 
-    - Esses relatórios são a lista processada de programas instalados na sua maquina atual.
-    - Nesse processo são gerados dois arquivos: apps-com-pacotes.json, apps-prejudicados.json.
-      - **apps-com-pacotes.json:** Esse é o arquivo principal para a automatização de instalação de apps. Ele já foi processado e possui como conteúdo apenas apps instalaveis via winget.
-      - **app-prejudicados.json:** Esse é uma lista de todos os apps que não poderão ser instalados via winget. São apps que não possuem pacote publicado no winget ou possuem algum erro de formatação causado pela saída do comando `winget list`.
-    - O diretório dos arquivos gerados por esta etapa localiza-se na raíz do projeto e é criado ao executa-lo.
+#### 1️⃣ Gerar os relatórios antes de formatar  
 
-    Execute os comando na raíz do projeto.
+Antes de formatar, execute o comando para gerar os arquivos de referência dos aplicativos instalados:  
 
-    Instale as dependências do projeto
+```sh
+npm install -y
+node index.js --generate-files-only
+```
 
-        npm install -y
+Isso criará dois arquivos no diretório raiz do projeto:  
 
-    Execute a criação dos relatórios
+📄 **`apps-com-pacotes.json`** → Contém apenas os aplicativos que podem ser reinstalados automaticamente via winget. 
 
-        node index.js --generate-files-only
+📄 **`apps-prejudicados.json`** → Lista os aplicativos que **não** podem ser reinstalados automaticamente, seja por falta de suporte no winget ou por problemas na saída do comando `winget list`.  
 
-2.  Após gerados os arquivos, copie o diretório _arquivos_gerados_ - ou o projeto inteiro - e mantenha-o em um local seguro contra formatação.
-    - Sinta-se livre para ajustar o _apps-com-pacotes.json_, remova o que você bem quiser, mas cuidado para não quebrar a formatação do json.
-3.  Agora na sua máquina formatada, clone o projeto novamente e cole o diretório _arquivos_gerados_ na raíz do projeto - ou apenas traga a sua cópia completa do projeto para a máquina - e rode a automatização de instalação de apps.
+Copie a pasta `arquivos_gerados` (ou o projeto inteiro) para um local seguro antes de formatar o sistema.  
 
-    Utilize o seguinte comando no terminal na raíz do projeto:
+---
 
-        node index.js --consume-file-only
+#### 2️⃣ Reinstalar os aplicativos após a formatação  
 
-    Cada pacote será instalado um de cada vez de forma síncrona.
+Após formatar o sistema, recupere o diretório `arquivos_gerados` e coloque-o na raiz do projeto. Depois, execute:  
 
-    Para instalar os pacotes de forma assíncrona utilize o comando:
+```sh
+node index.js --consume-file-only
+```
 
-        node index.js --consume-file-only --async
+Os pacotes serão instalados **um por um** de forma síncrona.  
 
-    Após isso basta aguardar o termino do processo.
+Caso prefira instalar os pacotes de forma **assíncrona** (mais rápido, mas mais pesado para o sistema), use:  
 
-    A instalação síncrona pode ser muito demorada, mas demanda pouco processamento, RAM e escrita. A instalação assíncrona é muito mais rápida, porém, ainda não está otimizada, por isso pode demandar muito processamento, RAM e gravação de disco se houver um volume muito grande de apps a serem instalados, então evite usa-la em computadores legado.
+```sh
+node index.js --consume-file-only --async
+```
 
-    Esse processo pode demorar, pois depende da velocidade dos servidores dos pacotes.
+Ou defina um nível de concorrência para controlar quantas instalações simultâneas ocorrerão:  
+
+```sh
+node index.js --consume-file-only --async-concurrency=<NÚMERO>
+```
+
+📌 **Dicas:**  
+- A instalação síncrona é mais lenta, mas consome menos RAM e CPU e gravação de armazenamento.  
+- A instalação assíncrona é mais rápida, mas o número de pacotes instalados simultaneamente pode impactar o desempenho geral da máquina, além de poder ser limitado pela velocidade de escrita do armazenamento padrão do sistema.  
+- O padrão para instalações assíncronas é **5 pacotes simultâneos**.  
+
+Esse processo pode demorar, pois depende da velocidade dos servidores dos pacotes e da capacidade do seu hardware.  
+
+</details>
