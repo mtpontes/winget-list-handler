@@ -1,5 +1,3 @@
-const { IdentificadorPadraoTextual } = require('../constants/constants');
-
 class FormatadorJson {
   constructor() { }
 

@@ -1,6 +1,6 @@
 const instalarPacotes = require('./services/instalarPacotes');
 const FileUtils = require('./utils/FileUtils')
-const FormatadorJson = require('./services/ProcessadorJson');
+const FormatadorJson = require('./services/FormatadorJson');
 const ProcessadorDeDados = require('./services/ProcessadorDeDados');
 
 const processador = new ProcessadorDeDados();
@@ -18,8 +18,8 @@ function runGerarSomenteArquivos() {
   FileUtils.gravarRelatoriosJson(formatedAppsComPackage, formatedAppsPrejudicados)
 }
 
-async function runConsumirArquivo({ isAsync = false }) {
-  await instalarPacotes({ isAsync: isAsync });
+async function runConsumirArquivo({ isAsync = false, concurrency = 5 }) {
+  await instalarPacotes({ isAsync: isAsync, concurrency: concurrency });
 }
 
 module.exports = { runGerarSomenteArquivos, runConsumirArquivo };

@@ -1,16 +1,20 @@
 {
-  "name": "Desenvovlendo script",
+  "name": "Automação Winget",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cls && npx jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async-await-queue": "2.1.4",
     "shelljs": "^0.8.5"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
