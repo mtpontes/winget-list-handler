@@ -1,60 +1,76 @@
 # Winget List Handler
 
-## 🔎 About
+## 🔎 About  
 
-This project was created to solve the tedious process of installing applications one by one after formatting your system. It uses Winget to handle the installation process and to generate a list of all the app packages installed on your Windows machine (not limited to apps installed via Winget).
+This project automates the process of reinstalling applications after formatting the system. Using **winget**, it generates a report with all installed applications on Windows (including those that **were not** installed via winget) and facilitates the automatic reinstallation of compatible apps.  
 
-The goal of this project is to automate the installation of your applications on a formatted system and generate a report of applications that could not be installed automatically, giving you a clear idea of ​​what still needs to be installed.
+Additionally, if an application cannot be installed automatically, the project generates a report indicating which apps still need to be installed manually.  
 
-- First, you generate files with references to your apps BEFORE formatting.
-- Then, you run the automation to install the apps.
+### 📌 How does it work?  
 
-<details><summary><h2>🚀 How to Use</h2></summary>
+1️⃣ **Before formatting**: generate reference files with the list of installed applications.  
+2️⃣ **After formatting**: use automation to reinstall the apps.  
 
-### Prerequisites
+---
 
-![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+<details><summary><h2>🚀 How to use</h2></summary>
 
-### Step-by-Step
+### ⚙️ Prerequisites  
 
-1.  Before formatting your machine, generate the app reports.
+- ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)  
+- ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)  
+- ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)  
 
-    - These reports are the processed list of programs installed on your current machine.
-    - Two files will be generated during this process: `apps-com-pacotes.json` and `apps-prejudicados.json`.
-      - **apps-com-pacotes.json:** This is the main file for automating app installations. It is already processed and contains only apps that can be installed via Winget.
-      - **apps-prejudicados.json:** This is a list of all apps that cannot be installed via Winget. These are apps without a published Winget package or those with formatting errors caused by the output of the `winget list` command.
-    - The directory containing the generated files is located in the root of the project and is created when executed.
+---
 
-    Run the commands in the root of the project.
+### 📌 Step by step  
 
-    Install the project dependencies:
+#### 1️⃣ Generate reports before formatting  
 
-        npm install -y
+Before formatting, run the following command to generate reference files with the list of installed applications:  
 
-    Generate the reports:
+```sh
+npm install -y
+node index.js --generate-files-only
+```
 
-        node index.js --generate-files-only
+This will create two files in the project's root directory:  
 
-2.  After generating the files, copy the `_arquivos_gerados_` directory—or the entire project—and keep it in a safe place to avoid losing it during formatting.
-    - Feel free to adjust the `apps-com-pacotes.json` file, removing entries as needed, but be careful not to break the JSON format.
-3.  On your formatted machine, clone the project again and paste the `_arquivos_gerados_` directory into the root of the project—or bring your complete project backup—and run the automation to install the apps.
+📄 **`apps-com-pacotes.json`** → Contains only applications that can be automatically reinstalled via winget.  
 
-    Use the following command in the project root:
+📄 **`apps-prejudicados.json`** → Lists applications that **cannot** be automatically reinstalled, either due to lack of support in winget or issues with the `winget list` command output.  
 
-        node index.js --consume-file-only
+Copy the `arquivos_gerados` folder (or the entire project) to a safe location before formatting the system.  
 
-    Each package will be installed one at a time synchronously.
+---
 
-    To install packages asynchronously, use the command:
+#### 2️⃣ Reinstall applications after formatting  
 
-        node index.js --consume-file-only --async
+After formatting the system, retrieve the `arquivos_gerados` directory and place it in the project's root. Then, run:  
 
-    After that, just wait for the process to complete.
+```sh
+node index.js --consume-file-only
+```
 
-    The synchronous installation can take a long time but uses minimal processing, RAM, and disk writing. The asynchronous installation is much faster but is not yet optimized. As a result, it can demand significant processing, RAM, and disk writing if a large number of apps need to be installed. Avoid using it on legacy computers.
+Packages will be installed **one by one** synchronously.  
 
-    This process may take some time, as it depends on the speed of the package servers.
+If you prefer to install packages **asynchronously** (faster but more resource-intensive), use:  
 
-    </details>
+```sh
+node index.js --consume-file-only --async
+```
+
+Or define a concurrency level to control how many installations occur simultaneously:  
+
+```sh
+node index.js --consume-file-only --async-concurrency=<NUMBER>
+```
+
+📌 **Tips:**  
+- Synchronous installation is slower but consumes less RAM, CPU, and storage write operations.  
+- Asynchronous installation is faster, but the number of simultaneously installed packages may impact overall system performance and could be limited by the default storage write speed.  
+- The default for asynchronous installations is **5 simultaneous packages**.  
+
+This process may take time, as it depends on the package servers' speed and your hardware's capacity.  
+
+</details>
