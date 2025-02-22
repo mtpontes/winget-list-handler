@@ -1,76 +1,85 @@
 # Winget List Handler
 
-## 🔎 About  
+## 🔎 About
 
-This project automates the process of reinstalling applications after formatting the system. Using **winget**, it generates a report with all installed applications on Windows (including those that **were not** installed via winget) and facilitates the automatic reinstallation of compatible apps.  
+This project automates the process of reinstalling applications after formatting the system. Using **winget**, it allows you to generate a report of all installed applications on Windows (including those **not** installed via winget) and facilitates the automatic reinstallation of compatible apps.
 
-Additionally, if an application cannot be installed automatically, the project generates a report indicating which apps still need to be installed manually.  
+Additionally, if some applications cannot be installed automatically, the project generates a report indicating which apps still need to be installed manually.
 
-### 📌 How does it work?  
+### 📌 How does it work?
 
-1️⃣ **Before formatting**: generate reference files with the list of installed applications.  
-2️⃣ **After formatting**: use automation to reinstall the apps.  
+1️⃣ **Before formatting**: generate reference files with a list of installed applications.  
+2️⃣ **After formatting**: use the automation to reinstall the apps.
 
 ---
 
 <details><summary><h2>🚀 How to use</h2></summary>
 
-### ⚙️ Prerequisites  
+### ⚙️ Prerequisites
 
-- ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)  
-- ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)  
-- ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)  
+- ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+- ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+- ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
 ---
 
-### 📌 Step by step  
+### 📌 Step by step
 
-#### 1️⃣ Generate reports before formatting  
+#### 1️⃣ Generate reports before formatting
 
-Before formatting, run the following command to generate reference files with the list of installed applications:  
+Before formatting, run the command to generate reference files for installed applications:
 
 ```sh
 npm install -y
 node index.js --generate-files-only
 ```
 
-This will create two files in the project's root directory:  
+This will create two files in the project's root directory:
 
-📄 **`apps-com-pacotes.json`** → Contains only applications that can be automatically reinstalled via winget.  
+📄 **`apps-com-pacotes.json`** → Contains only applications that can be automatically reinstalled via winget.
 
-📄 **`apps-prejudicados.json`** → Lists applications that **cannot** be automatically reinstalled, either due to lack of support in winget or issues with the `winget list` command output.  
+📄 **`apps-prejudicados.json`** → Lists applications that **cannot** be reinstalled automatically, either due to lack of support in winget or issues with the `winget list` command output.
 
-Copy the `arquivos_gerados` folder (or the entire project) to a safe location before formatting the system.  
+Copy the `arquivos_gerados` folder (or the entire project) to a safe location before formatting the system.
 
 ---
 
-#### 2️⃣ Reinstall applications after formatting  
+#### 2️⃣ Reinstall applications after formatting
 
-After formatting the system, retrieve the `arquivos_gerados` directory and place it in the project's root. Then, run:  
+Before proceeding, ensure that **Node.js** and **NPM** are installed on the system. If not, download and install them from the official website:
 
-```sh
-node index.js --consume-file-only
-```
+🔗 [Node.js Official](https://nodejs.org/)
 
-Packages will be installed **one by one** synchronously.  
+After formatting the system, retrieve the `arquivos_gerados` directory and place it in the project root. Then, run one of the three commands:
 
-If you prefer to install packages **asynchronously** (faster but more resource-intensive), use:  
+- **Installs apps one by one**
 
-```sh
-node index.js --consume-file-only --async
-```
+  The packages will be installed **one at a time** synchronously.
 
-Or define a concurrency level to control how many installations occur simultaneously:  
+  ```sh
+  node index.js --consume-file-only
+  ```
 
-```sh
-node index.js --consume-file-only --async-concurrency=<NUMBER>
-```
+- **Installs 5 apps simultaneously in a queue**
 
-📌 **Tips:**  
-- Synchronous installation is slower but consumes less RAM, CPU, and storage write operations.  
-- Asynchronous installation is faster, but the number of simultaneously installed packages may impact overall system performance and could be limited by the default storage write speed.  
-- The default for asynchronous installations is **5 simultaneous packages**.  
+  When one installation finishes, another from the queue starts.
 
-This process may take time, as it depends on the package servers' speed and your hardware's capacity.  
+  ```sh
+  node index.js --consume-file-only --async
+  ```
+
+- **Allows you to define how many apps can be installed simultaneously**
+
+  ```sh
+  node index.js --consume-file-only --async-concurrency=<NUMBER>
+  ```
+
+📌 **Tips:**
+
+- Synchronous installation is slower but consumes less RAM, CPU, and storage write cycles.
+- Asynchronous installation is faster, but the number of packages installed simultaneously can impact overall system performance and may be limited by the system's default storage write speed.
+- The default for asynchronous installations is **5 simultaneous packages**.
+
+This process may take time, as it depends on package server speeds and your hardware capabilities.
 
 </details>
