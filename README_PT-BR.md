@@ -31,7 +31,7 @@ Antes de formatar, execute o comando para gerar os arquivos de referência dos a
 
 ```sh
 npm install -y
-node index.js --generate-files-only
+node index.js --generate-files
 ```
 
 Isso criará dois arquivos no diretório raiz do projeto:
@@ -57,7 +57,7 @@ Após formatar o sistema, recupere o diretório `arquivos_gerados` e coloque-o n
   Os pacotes serão instalados **um por um** de forma síncrona.
 
   ```sh
-  node index.js --consume-file-only
+  node index.js --consume-file
   ```
 
 - **Instala 5 apps simultâneamente de forma enfileirada**
@@ -65,13 +65,13 @@ Após formatar o sistema, recupere o diretório `arquivos_gerados` e coloque-o n
   Quando uma instalação acaba, inicia outra que está na fila
 
   ```sh
-  node index.js --consume-file-only --async
+  node index.js --consume-file --async
   ```
 
 - **Permite você definir até quantos apps podem ser instalados simultâneamente**
 
   ```sh
-  node index.js --consume-file-only --async-concurrency=<NÚMERO>
+  node index.js --consume-file --async-concurrency=<NÚMERO>
   ```
 
 📌 **Dicas:**
