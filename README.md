@@ -31,7 +31,7 @@ Before formatting, run the command to generate reference files for installed app
 
 ```sh
 npm install -y
-node index.js --generate-files-only
+node index.js --generate-files
 ```
 
 This will create two files in the project's root directory:
@@ -57,7 +57,7 @@ After formatting the system, retrieve the `arquivos_gerados` directory and place
   The packages will be installed **one at a time** synchronously.
 
   ```sh
-  node index.js --consume-file-only
+  node index.js --consume-file
   ```
 
 - **Installs 5 apps simultaneously in a queue**
@@ -65,13 +65,13 @@ After formatting the system, retrieve the `arquivos_gerados` directory and place
   When one installation finishes, another from the queue starts.
 
   ```sh
-  node index.js --consume-file-only --async
+  node index.js --consume-file --async
   ```
 
 - **Allows you to define how many apps can be installed simultaneously**
 
   ```sh
-  node index.js --consume-file-only --async-concurrency=<NUMBER>
+  node index.js --consume-file --async-concurrency=<NUMBER>
   ```
 
 📌 **Tips:**

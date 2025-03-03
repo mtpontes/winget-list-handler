@@ -1,5 +1,10 @@
-module.exports = {
-  testEnvironment: 'node', // Ambiente de teste para Node.js
-  testMatch: ['**/test*.js'], // Procura testes em qualquer arquivo .js dentro da pasta "test"
-  verbose: true, // Exibe detalhes dos testes
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+export default {
+  preset: "ts-jest",
+  testEnvironment: "node",
+  transform: {
+    "^.+\\.tsx?$": ["ts-jest", {}],
+  },
+  moduleFileExtensions: ["ts", "tsx", "js", "json", "node"],
+  rootDir: "src",
 };

@@ -1,0 +1,29 @@
+{
+  "include": [
+    "./src/**/*.ts",
+    "./"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**/*.test.ts",
+    "src/test"
+  ],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "module": "CommonJS",
+    "target": "ESNext",
+    "noEmitOnError": true, // -------------------
+    "noImplicitOverride": true,
+    "skipLibCheck": true, /* Skip type checking all .d.ts files. */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "importHelpers": true,
+    "experimentalDecorators": true,
+  }
+}

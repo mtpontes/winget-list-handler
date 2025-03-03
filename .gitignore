@@ -133,6 +133,7 @@ test.js
 
 apps-com-pacotes.*
 apps-prejudicados.*
-*.txt
-winget_lista.txt
+**.txt
 .vscode/
+
+**.exe
