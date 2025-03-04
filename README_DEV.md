@@ -1,6 +1,6 @@
 # Winget List Handler
 
-### 📌 How does it work?
+## 📌 How does it work?
 
 1️⃣ **App report generation**: generates reference files with the list of installed applications.
 

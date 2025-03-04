@@ -2,7 +2,7 @@
 
 ## 🔎 About
 
-This project automates the process of reinstalling applications after formatting the system. Using winget, it allows you to generate a report with all applications installed on Windows (including those that were not installed via winget) and facilitates the automatic reinstallation of compatible apps.
+This project automates the process of reinstalling applications after reinstall the system. Using winget, it allows you to generate a report with all applications installed on Windows (including those that were not installed via winget) and facilitates the automatic reinstallation of compatible apps.
 
 In addition, if an application cannot be installed automatically, the project generates a report (`apps_prejudicados.json`) indicating which apps still need to be installed manually.
 
@@ -21,13 +21,13 @@ If you are a developer and want to contribute or customize the tool, see the [In
 - ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 - ![Winget-cli](https://img.shields.io/badge/Winget_CLI-%234D4D4D.svg?style=for-the-badge&logo=windows-terminal&logoColor=white)
 
-#### 📥 Download and Install
+### 📥 Download and Install
 
 1. Access the project's [releases page](https://github.com/mtpontes/winget-list-handler/releases).
 2. Download the latest version of the `winget-handler.exe` file.
 3. Keep this `.exe` in an isolated directory for better use.
 
-#### 1️⃣ Configure Winget
+### 1️⃣ Configure Winget
 
 Before you start using the solution, check if you have winget installed and configured correctly on your machine.
 
@@ -53,9 +53,9 @@ If this term is not accepted, it will not be possible to use the solution. This 
 Winget tool and has no direct relation to the application, however, this solution is based on the Winget tool and
 relies on it being properly configured to work.
 
-#### 2️⃣ Generate reports before formatting
+### 2️⃣ Generate reports before system reinstallation
 
-Before formatting, run the application report generation. These reports are necessary for the solution
+Before before system reinstallation, run the application report generation. These reports are necessary for the solution
 to install the current applications on the machine. In addition, it also provides a report with the list of applications that will not be installed by the solution, serving as a guideline for which apps you will need to install manually.
 
 Run the command to generate the reference files for the installed applications:
@@ -76,15 +76,15 @@ This will create a directory and two files where `winget-handler.exe` is running
 
 📄 **`apps-prejudicados.json`** → Lists the applications that **cannot** be reinstalled automatically, either due to lack of support in winget or due to problems with the output of the `winget list` command.
 
-Copy the `arquivos_gerados` directory and the `winget-handler.exe` executable to a safe, format-free location.
+Copy the `arquivos_gerados` directory and the `winget-handler.exe` executable to a safe.
 
-After that, you can format the system.
+After that, you can reinstall the system.
 
 ---
 
-#### 3️⃣ Reinstall applications after formatting
+### 3️⃣ Install applications after reinstalling the system
 
-After formatting the system, recover the `arquivos_gerados` directory and the `winget-handler.exe` executable.
+After reinstall the system, recover the `arquivos_gerados` directory and the `winget-handler.exe` executable.
 
 Then, run one of the three commands:
 

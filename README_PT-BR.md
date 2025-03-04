@@ -20,13 +20,13 @@ Se você é um desenvolvedor e deseja contribuir ou personalizar a ferramenta, v
 - ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 - ![Winget-cli](https://img.shields.io/badge/Winget_CLI-%234D4D4D.svg?style=for-the-badge&logo=windows-terminal&logoColor=white)
 
-#### 📥 Baixar e Instalar
+### 📥 Baixar e Instalar
 
 1. Acesse a [página de releases](https://github.com/mtpontes/winget-list-handler/releases) do projeto.
 2. Baixe a versão mais recente do arquivo `winget-handler.exe`.
 3. Mantenha esse `.exe` em um diretório isolado para melhor utilização.
 
-#### 1️⃣ Configurar Winget
+### 1️⃣ Configurar Winget
 
 Antes de começar a utilizar a solução, verifique se está com winget instalado e configurado corretamente na sua máquina.
 
@@ -52,7 +52,7 @@ Caso esse termo não seja aceito, não será possível utilizar a solução. Ess
 ferramenta Winget e não tem nenhuma relação direta com a aplicação, porém, esta solução é baseada na ferramenta Winget e
 depende que ele esteja devidamente configurado para funcionar.
 
-#### 2️⃣ Gerar os relatórios antes de formatar
+### 2️⃣ Gerar os relatórios antes de formatar
 
 Antes de formatar, execute a geração de relatórios de aplicativos. Esses relatórios são necessários para a solução
 fazer a instalação dos aplicativos atuais da máquina. Além disso, ele também fornece um relatório com a relação de
@@ -82,7 +82,7 @@ Após isso já é possível formatar o sistema.
 
 ---
 
-#### 3️⃣ Reinstalar os aplicativos após a formatação
+### 3️⃣ Reinstalar os aplicativos após a formatação
 
 Após formatar o sistema, recupere o diretório `arquivos_gerados` e o executável `winget-handler.exe`.
 
