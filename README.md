@@ -137,5 +137,6 @@ This process may take a while, as it depends on the speed of the package servers
 - **Winget is not installed/configured**: Make sure Winget is installed and configured correctly.
 - **Some applications were not reinstalled**: Check the `apps-prejudicados.json` file and install manually.
 - **Error running the executable**: Run as administrator and try again.
+- **The app does not find the file exec.bat**: Keep the exec.bat file at the same ``.exe`` application level level. The .bat file was the way I found to circumvent some terminal limitations. For some specific applications it is necessary to insert a second input that may vary from package to package, but when the execution is done via .BAT This second input is ignored and the winget follows the normal flow.
 
 If you encounter other problems, please open an [issue](https://github.com/mtpontes/winget-list-handler/issues) in the repository.
