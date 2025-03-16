@@ -3,7 +3,7 @@
   "description": "CLI para automação e gerenciamento de pacotes Winget",
   "version": "2.0.0",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "bin": "dist/index.js",
   "scripts": {
     "test": "cls && jest",
