@@ -6,6 +6,7 @@ export default class Constants {
   public static UTF_8: BufferEncoding = "utf8";
   public static ARQUIVO_BAT = "exec.bat";
   public static ID = "ID";
+  public static ZERO = 0;
 
   public static FOLDER_RESULT_NAME = "arquivos_gerados";
   public static FOLDER_RESULT_PATH = path.resolve(Constants.FOLDER_RESULT_NAME);
