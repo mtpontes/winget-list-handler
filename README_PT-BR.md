@@ -76,6 +76,8 @@ Isso criará um diretório e dois arquivos onde o `winget-handler.exe` estiver s
 
 📄 **`apps-prejudicados.json`** → Lista os aplicativos que **não** podem ser reinstalados automaticamente, seja por falta de suporte no winget ou por problemas na saída do comando `winget list`.
 
+📄 **`fail.json`** → Lista os apps que apresentaram algum erro durante a instalação.
+
 Copie o diretório `arquivos_gerados` e o executável `winget-handler.exe` para um local seguro, livre de formatação.
 
 Após isso já é possível formatar o sistema.

@@ -76,6 +76,8 @@ This will create a directory and two files where `winget-handler.exe` is running
 
 📄 **`apps-prejudicados.json`** → Lists the applications that **cannot** be reinstalled automatically, either due to lack of support in winget or due to problems with the output of the `winget list` command.
 
+📄 **`fail.json`** → Lists the apps that presented some errors during the installation.
+
 Copy the `arquivos_gerados` directory and the `winget-handler.exe` executable to a safe.
 
 After that, you can reinstall the system.

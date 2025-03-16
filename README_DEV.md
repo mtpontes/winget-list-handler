@@ -61,6 +61,8 @@ This will create a directory and two files where `winget-handler.exe` is running
 
 📄 **`damaged-apps.json`** → Lists the applications that **cannot** be automatically reinstalled, either due to lack of support in winget or due to problems with the output of the `winget list` command.
 
+📄 **`fail.json`** → Lists the apps that presented some errors during the installation.
+
 Copy the `generated_files` folder (or the entire project) to a safe location before formatting the system.
 
 ---
