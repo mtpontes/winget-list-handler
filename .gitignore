@@ -129,6 +129,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# project
 test.js
 
 apps-com-pacotes.*
@@ -137,3 +138,4 @@ apps-prejudicados.*
 .vscode/
 
 **.exe
+**.json

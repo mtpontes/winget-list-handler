@@ -36,31 +36,39 @@ export default class InstallerImpl implements IInstaller {
     const fails: Array<AppsComPackageType> = [];
 
     const queue = new Queue(concurrency);
-    const tasks = packages.map((pkg, index) =>
+
+    const installPromises = packages.map((pkg, index) =>
       queue.run(async () => {
-        const command = `${Constants.ARQUIVO_BAT} ${pkg.id}`;
+        const command = `${Constants.ARQUIVO_BAT} ${pkg.nome}`;
         console.log(
-          `[Pacote ${index + 1}/${packages.length}] Iniciando instalação do pacote ${pkg.id} com o comando: ${command}`
+          `${this.indexarPacotes(index, packages.length)} Iniciando instalação do pacote ${pkg.nome} com o comando: ${command}`
         );
 
         try {
           await new Promise((resolve, reject) => {
-            exec(command, { silent: false, async: true }, (error, stdout, stderr) => {
-              if (error) {
-                console.error(`[Pacote ${index + 1}/${packages.length}] Erro ao instalar o pacote ${pkg.id}:`, error);
-                reject(error);
+            exec(command, { silent: false, async: true }, (code, stdout) => {
+              if (code !== Constants.ZERO) {
+                console.error(`${this.indexarPacotes(index, packages.length)} Erro ao instalar o pacote ${pkg.nome}:`, code);
+                reject(code);
               } else {
-                console.log(`[Pacote ${index + 1}/${packages.length}] Pacote ${pkg.id} instalado com sucesso.`);
+                console.log(`${this.indexarPacotes(index, packages.length)} Pacote ${pkg.nome} instalado com sucesso.`);
                 resolve(stdout);
               }
             });
           });
         } catch (error) {
-          console.error(`[Pacote ${index + 1}/${packages.length}] Falha na instalação do pacote ${pkg.id}.`, error);
-          FileUtils.writeFails(fails);
+          console.error(`${this.indexarPacotes(index, packages.length)} Falha na instalação do pacote ${pkg.nome}.`, error);
+          fails.push(pkg);
         }
       })
     );
+
+    await Promise.all(installPromises);
+    if (fails.length > 0) FileUtils.writeFails(fails);
+  }
+
+  private indexarPacotes(index: number, totalPackages: number): string {
+    return `[Pacote ${index + 1}/${totalPackages}]`;
   }
 
   /**
