@@ -13,32 +13,31 @@ export default class CLIConst {
 
   static MESSAGES = {
     message_1: `
-        O argumento ${CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY}
-        aceita somente números de 1 a 100 após o caractere '='. Informar um valor
-        numérico é obrigatório ao passar esse argumento.
+        The ${CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY} argument only 
+        accepts numbers from 1 to 100 after the '=' character. Inform a value
+        Numerical is mandatory when passing this argument.
         
-        Exemplo de uso: node index.js ${CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY}5
+        Use Example: winget-handler ${CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY}5
       `,
     message_2: `
-        Após o argumento obrigatório ${CLIConst.CONSUME_FILE.required} 
-        é possível passar apenas um dos seguintes argumentos:
+        After the mandatory argument ${CLIConst.CONSUME_FILE.required} 
+        It is possible to pass only one of the following arguments:
         
         ${Object.values(CLIConst.CONSUME_FILE.optional).join(", ")}<number>
     `,
     message_3: `
-        Não é possível usar mais de um argumento para o processamento assíncrono.
-        Utilize somente um dos argumentos: ${CLIConst.CONSUME_FILE.optional.ASYNC}, ${CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY}
+        It is not possible to use more than one argument for asynchronous processing.
+        Use only one of the arguments: ${CLIConst.CONSUME_FILE.optional.ASYNC}, ${CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY}
     `,
   };
 
   static EXAMPLE = `
-    Exemplos:
+    Examples:
 
-      Exemplo 1: node index.js ${CLIConst.GENERATE_FILES_ONLY.required}
-      Exemplo 2: node index.js ${CLIConst.CONSUME_FILE.required}
-      Exemplo 3: node index.js ${CLIConst.CONSUME_FILE.required + " " + CLIConst.CONSUME_FILE.optional.ASYNC}
-      Exemplo 4: node index.js ${
-        CLIConst.CONSUME_FILE.required + " " + CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY + 5
-      }
+      Example 1: winget-handler ${CLIConst.GENERATE_FILES_ONLY.required}
+      Example 2: winget-handler ${CLIConst.CONSUME_FILE.required}
+      Example 3: winget-handler ${CLIConst.CONSUME_FILE.required + " " + CLIConst.CONSUME_FILE.optional.ASYNC}
+      Example 4: winget-handler ${CLIConst.CONSUME_FILE.required + " " + CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY + 5
+    }
     `;
 }

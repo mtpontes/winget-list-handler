@@ -4,38 +4,38 @@ import MultipleArgumentsError from './main/infra/error/errors/MultipleArgumentsE
 import RequiredArgumentError from './main/infra/error/errors/RequiredArgumentError.js';
 import CLIConst from "./main/domain/constants/CLIConst.js";
 import GlobalErrorHandler from "./main/infra/error/GlobalErrorHandler.js";
-import App from './main/business/App.js';
+import Application from './main/business/Application.js';
 import CLIUtils from './main/infra/utils/CLIUtils.js';
 
-const app: App = new App()
+const application: Application = new Application()
 let args: Array<string> = process.argv;
 
 /**
- * Executa o fluxo principal do programa com base nos argumentos passados via linha de comando.
+ * Executes the main program flow based on the command-line arguments provided.
  * @function run
- * @throws {RequiredArgumentError} Se nenhum ou mais de um argumento obrigatório for fornecido.
- * @throws {ArgumentNotSupportedError} Se argumentos não suportados forem fornecidos.
- * @throws {MultipleArgumentsError} Se múltiplos argumentos de async forem fornecidos.
- * @throws {ArgumentError} Se o valor de concorrência não for numérico ou estiver fora do intervalo permitido.
+ * @throws {RequiredArgumentError} If no required argument or more than one is provided.
+ * @throws {ArgumentNotSupportedError} If unsupported arguments are provided.
+ * @throws {MultipleArgumentsError} If multiple async arguments are provided.
+ * @throws {ArgumentError} If the concurrency value is not numeric or is out of the allowed range.
  */
 function run(): void {
   try {
     hasHelp()
 
     const requiredArg: string | undefined = getRequiredArgument()
-    args = removerArgumentosRedundantes(args)
+    args = removeRedundantArgs(args)
 
     switch (requiredArg) {
       case CLIConst.GENERATE_FILES_ONLY.required:
-        validateArgsForGenerateFileFlux(args)
-        app.runGerarArquivos()
+        validateArgsForGenerateFilesFlux(args)
+        application.runGenerateFiles()
         break;
 
       case CLIConst.CONSUME_FILE.required:
         let asyncArg: string | null = findAsyncArg(args)
-        let concurrencyArg: string = findConcurrencyArg(args) as string
-        validateArgsForConsumeFileFlux(args, asyncArg!, concurrencyArg)
-        runFluxConsumirArquivo(asyncArg, concurrencyArg)
+        let concurrencyArg: string | null = findConcurrencyArg(args) as string
+        validateArgsForConsumeFileFlux(args, asyncArg, concurrencyArg)
+        runConsumeAppFileFlux(asyncArg, concurrencyArg)
         break;
 
       default:
@@ -47,7 +47,7 @@ function run(): void {
 }
 
 /**
- * Verifica se o argumento de ajuda foi fornecido e exibe a mensagem de exemplo.
+ * Checks if the help argument was provided and displays the example message.
  * @function hasHelp
  */
 function hasHelp() {
@@ -59,71 +59,71 @@ function hasHelp() {
 }
 
 /**
- * Obtém o argumento obrigatório fornecido via linha de comando.
+ * Retrieves the required argument provided via the command line.
  * @function getRequiredArgument
- * @returns {string} O argumento obrigatório encontrado.
- * @throws {RequiredArgumentError} Se nenhum ou mais de um argumento obrigatório for fornecido.
+ * @returns {string} The required argument found.
+ * @throws {RequiredArgumentError} If no required argument or more than one is provided.
  */
 function getRequiredArgument(): string | undefined {
   const requiredArgs: Array<string> = CLIUtils.getRequiredArgs()
 
-  const requiredArgsEncontrados: Array<string> = args.filter(arg => requiredArgs.includes(arg))
-  if (requiredArgsEncontrados.length > 1 || requiredArgsEncontrados.length < 1)
+  const requiredArgsFound: Array<string> = args.filter(arg => requiredArgs.includes(arg))
+  if (requiredArgsFound.length > 1 || requiredArgsFound.length < 1)
     throw new RequiredArgumentError()
 
-  return requiredArgsEncontrados.shift()
+  return requiredArgsFound.shift()
 }
 
 /**
- * Remove argumentos redundantes da lista de argumentos.
- * @function removerArgumentosRedundantes
- * @param {Array<string>} args - Lista de argumentos.
- * @returns {Array<string>} Lista de argumentos sem os argumentos redundantes.
+ * Removes redundant arguments from the argument list.
+ * @function removeRedundantArgs
+ * @param {Array<string>} args - List of arguments.
+ * @returns {Array<string>} The argument list without redundant arguments.
  */
-function removerArgumentosRedundantes(args: Array<string>): Array<string> {
-  return args.slice(3); // remove `node index.js <--required-arg>` da lista de argumentos
+function removeRedundantArgs(args: Array<string>): Array<string> {
+  return args.slice(3); // Removes `node index.js <--required-arg>` from the argument list
 }
 
 /**
- * Valida os argumentos fornecidos para o fluxo de consumo de arquivo.
+ * Validates the arguments provided for the file consumption flow.
  * @function validateArgsForConsumeFileFlux
- * @param {Array<string>} args - Lista de argumentos.
- * @param {string|null} asyncArg - Argumento async, se fornecido.
- * @param {string|null} concurrencyArg - Argumento de concorrência, se fornecido.
- * @throws {MultipleArgumentsError} Se múltiplos argumentos de async forem fornecidos.
- * @throws {ArgumentNotSupportedError} Se argumentos não suportados forem fornecidos.
+ * @param {Array<string>} args - List of arguments.
+ * @param {string|null} asyncArg - Async argument, if provided.
+ * @param {string|null|undefined} concurrencyArg - Concurrency argument, if provided.
+ * @throws {MultipleArgumentsError} If multiple async arguments are provided.
+ * @throws {ArgumentNotSupportedError} If unsupported arguments are provided.
  */
-function validateArgsForConsumeFileFlux(args: Array<string>, asyncArg: string, concurrencyArg: string): void {
-  // Se dois argumentos de async forem passados lança erro
+function validateArgsForConsumeFileFlux(args: Array<string>, asyncArg: string | null, concurrencyArg: string | null | undefined): void {
+  // Throws an error if multiple async arguments are passed
   if (asyncArg !== null && concurrencyArg !== null)
-    throw new MultipleArgumentsError(CLIConst.MESSAGES.message_2)
+    throw new MultipleArgumentsError(CLIConst.MESSAGES.message_2);
 
-  const argumentosSuportados: Array<string> = Object.values(CLIConst.CONSUME_FILE.optional)
-  const listaDeArgumentosNaoSuportados: Array<string> = args.filter(arg => {
-    arg = arg.includes('concurrency=') ? String(arg.split('=')[0]).concat('=') : arg
-    return !argumentosSuportados.includes(arg)
-  })
+  const supportedArgs: Array<string> = Object.values(CLIConst.CONSUME_FILE.optional);
+  const unsupportedArgs: Array<string> = args.filter(arg => {
+    arg = arg.includes('concurrency=') ? String(arg.split('=')[0]).concat('=') : arg;
+    return !supportedArgs.includes(arg);
+  });
 
-  if (listaDeArgumentosNaoSuportados.length > 0)
-    throw new ArgumentNotSupportedError(listaDeArgumentosNaoSuportados)
+  if (unsupportedArgs.length > 0)
+    throw new ArgumentNotSupportedError(unsupportedArgs);
 }
 
 /**
- * Valida os argumentos fornecidos para o fluxo de geração de arquivo.
- * @function validateArgsForGenerateFileFlux
- * @param {Array<string>} args - Lista de argumentos.
- * @throws {ArgumentNotSupportedError} Se argumentos não suportados forem fornecidos.
+ * Validates the arguments provided for the file generation flow.
+ * @function validateArgsForGenerateFilesFlux
+ * @param {Array<string>} args - List of arguments.
+ * @throws {ArgumentNotSupportedError} If unsupported arguments are provided.
  */
-function validateArgsForGenerateFileFlux(args: Array<string>): void {
+function validateArgsForGenerateFilesFlux(args: Array<string>): void {
   if (args.length > 0)
     throw new ArgumentNotSupportedError(args)
 }
 
 /**
- * Encontra o argumento async na lista de argumentos.
+ * Finds the async argument in the list of arguments.
  * @function findAsyncArg
- * @param {Array<string>} args - Lista de argumentos.
- * @returns {string|null} O argumento async encontrado ou null se não for fornecido.
+ * @param {Array<string>} args - List of arguments.
+ * @returns {string|null} The async argument found, or null if not provided.
  */
 function findAsyncArg(args: Array<string>): string | null {
   const index = args.indexOf(CLIConst.CONSUME_FILE.optional.ASYNC)
@@ -134,68 +134,68 @@ function findAsyncArg(args: Array<string>): string | null {
 };
 
 /**
- * Encontra o argumento de concorrência na lista de argumentos.
+ * Finds the concurrency argument in the list of arguments.
  * @function findConcurrencyArg
- * @param {Array<string>} args - Lista de argumentos.
- * @returns {string|null} O argumento de concorrência encontrado ou null se não for fornecido.
- * @throws {MultipleArgumentsError} Se múltiplos argumentos de concorrência forem fornecidos.
+ * @param {Array<string>} args - List of arguments.
+ * @returns {string|null} The concurrency argument found, or null if not provided.
+ * @throws {MultipleArgumentsError} If multiple concurrency arguments are provided.
  */
 function findConcurrencyArg(args: Array<string>): string | null | undefined {
-  const concurrencyIndices = [];
+  const concurrencyIndexes = [];
 
   for (let i = 0; i < args.length; i++) {
     if (args[i].startsWith(CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY)) {
-      concurrencyIndices.push(args[i]); // Grava o índice onde ocorre a string esperada
+      concurrencyIndexes.push(args[i]); // Grava o índice onde ocorre a string esperada
     }
   }
 
-  if (concurrencyIndices.length === 0) return null
-  if (concurrencyIndices.length === 1) return concurrencyIndices.shift()
+  if (concurrencyIndexes.length === 0) return null
+  if (concurrencyIndexes.length === 1) return concurrencyIndexes.shift()
   throw new MultipleArgumentsError(CLIConst.MESSAGES.message_3)
 };
 
 /**
- * Verifica se o valor de concorrência é numérico e está dentro do intervalo permitido.
- * @function isValorNumericoValido
- * @param {string} concurrencyArg - Argumento de concorrência.
- * @returns {boolean} True se o valor for válido, caso contrário lança um erro.
- * @throws {ArgumentError} Se o valor de concorrência não for numérico ou estiver fora do intervalo permitido.
+ * Checks if the concurrency value is numeric and within the allowed range.
+ * @function isValidNumericValue
+ * @param {string} concurrencyArg - The concurrency argument.
+ * @returns {boolean} True if the value is valid; otherwise, throws an error.
+ * @throws {ArgumentError} If the concurrency value is not numeric or is outside the allowed range.
  */
-function isValorNumericoValido(concurrencyArg: string): boolean {
-  const concurrencyValueAsNumber: number = getValorNumerico(concurrencyArg)
+function isValidNumericValue(concurrencyArg: string): boolean {
+  const concurrencyValueAsNumber: number = getNumericValue(concurrencyArg)
   const isNan: boolean = isNaN(concurrencyValueAsNumber)
 
   if (isNan) throw new ArgumentError(CLIConst.MESSAGES.message_1)
   return concurrencyValueAsNumber > 0 && concurrencyValueAsNumber <= 100
 }
 
-function getValorNumerico(concurrencyArg: string): number {
+function getNumericValue(concurrencyArg: string): number {
   return Number(concurrencyArg.split('=')[1])
 }
 
 /**
- * Executa o fluxo de consumo de arquivo com base nos argumentos fornecidos.
- * @function runFluxConsumirArquivo
- * @param {string|null} asyncArg - Argumento async, se fornecido.
- * @param {string|null} concurrencyArg - Argumento de concorrência, se fornecido.
+ * Executes the file consumption flow based on the provided arguments.
+ * @function runConsumeAppFileFlux
+ * @param {string|null} asyncArg - The async argument, if provided.
+ * @param {string|null} concurrencyArg - The concurrency argument, if provided.
  */
-function runFluxConsumirArquivo(asyncArg: any, concurrencyArg: any): void {
-  // Roda de forma síncrona caso não seja passado um argumento async
+function runConsumeAppFileFlux(asyncArg: any, concurrencyArg: any): void {
+  // Runs synchronously if no async argument is provided
   if (asyncArg === null && concurrencyArg === null) {
-    app.runConsumirArquivo({ isAsync: asyncArg, concurrency: null });
+    application.runConsumeAppsFile({ isAsync: false, concurrency: null });
     return
   }
 
   // async
   if (asyncArg !== null) {
-    app.runConsumirArquivo({ isAsync: asyncArg, concurrency: null })
+    application.runConsumeAppsFile({ isAsync: true, concurrency: null })
     return
   }
 
   // async concurrency
   if (concurrencyArg !== null) {
-    if (isValorNumericoValido(concurrencyArg)) {
-      app.runConsumirArquivo({ isAsync: true, concurrency: getValorNumerico(concurrencyArg) })
+    if (isValidNumericValue(concurrencyArg)) {
+      application.runConsumeAppsFile({ isAsync: true, concurrency: getNumericValue(concurrencyArg) })
       return
     }
   }

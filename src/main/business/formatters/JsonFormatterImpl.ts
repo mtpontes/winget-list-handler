@@ -1,49 +1,51 @@
 import IFormatter from "./IFormatter.js";
-import type { AppsComPackageType } from "../../infra/types/AppsComPackageType.js";
+import type { AppsType as AppsType } from "../../infra/types/AppsType.js";
 
 export default class JsonFormatterImpl implements IFormatter {
   /**
-   * Converte a lista de aplicativos com pacotes completos para um array de objetos formatados.
+   * Converts the list of apps with full packages into an array of formatted objects.
    *
-   * @param {Array<Array<string>>} comPacote - Lista de aplicativos, onde cada item contém nome, ID e, opcionalmente, a versão.
-   * @returns {Array<AppsComPackageType>} Lista de objetos representando os aplicativos com pacotes completos.
+   * @param {Array<Array<string>>} withPackage - The list of apps, where each item contains the name, ID, and optionally, the version.
+   * @returns {Array<AppsType>} List of objects representing the apps with full packages.
    *
    * @example
    * const apps = [
    *   ["App1", "12345", "1.0.0"],
    *   ["App2", "67890"]
    * ];
-   * formatarAppsComPacote(apps);
-   * // Retorna:
+   * formatApps(apps);
+   * // Returns:
    * // [
-   * //   { "nome": "App1", "id": "12345", "version": "1.0.0" },
-   * //   { "nome": "App2", "id": "67890", "version": null }
+   * //   { "name": "App1", "id": "12345", "version": "1.0.0" },
+   * //   { "name": "App2", "id": "67890", "version": null }
    * // ]
    */
-  public formatarAppsComPacote(comPacote: Array<Array<string>>): Array<AppsComPackageType> {
-    return comPacote.map(([nome, id, version = null]) => ({ nome, id, version })).filter(({ nome }) => nome?.trim());
+  public formatApps(withPackage: Array<Array<string>>): Array<AppsType> {
+    return withPackage
+      .map(([name, id, version = null]) => ({ name, id, version }))
+      .filter(({ name }) => name?.trim());
   }
 
   /**
-   * Converte a lista de aplicativos prejudicados para um array de strings formatado.
+   * Converts the list of broken apps into a formatted array of strings.
    *
-   * @param {Array<Array<string>>} prejudicados - Lista de aplicativos prejudicados contendo apenas o nome de cada aplicativo.
-   * @returns {Array<string>} Lista de nomes dos aplicativos prejudicados.
+   * @param {Array<Array<string>>} bad - List of broken apps, containing only the name of each app.
+   * @returns {Array<string>} List of names of the broken apps.
    *
    * @example
    * const apps = [
    *   ["App1"],
    *   ["App2"],
-   *   [""]  // Nome vazio será ignorado
+   *   [""]  // Empty name will be ignored
    * ];
-   * formatarAppsPrejudicados(apps);
-   * // Retorna:
+   * formatBadApps(apps);
+   * // Returns:
    * // [
    * //   "App1",
    * //   "App2"
    * // ]
    */
-  public formatAppsSemPacote(prejudicados: Array<Array<string>>): Array<string> {
-    return prejudicados.map(([nome]) => nome).filter((linha) => linha.trim());
+  public formatBadApps(bad: Array<Array<string>>): Array<string> {
+    return bad.map(([name]) => name).filter((line) => line.trim());
   }
 }

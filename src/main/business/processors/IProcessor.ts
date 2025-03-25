@@ -1,6 +1,5 @@
+import { ProcessedPackagesType } from '../../infra/types/ProcessedPackagesType'
+
 export default interface IProcessor {
-  process(dados: string): {
-    appsComPackage: Array<Array<string>>;
-    appsPrejudicados: Array<Array<string>>;
-  };
+  process(dados: string): ProcessedPackagesType;
 }

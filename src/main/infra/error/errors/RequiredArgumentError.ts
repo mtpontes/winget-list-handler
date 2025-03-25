@@ -3,11 +3,11 @@ import CLIUtils from "../../utils/CLIUtils";
 export default class RequiredArgumentError extends Error {
   constructor() {
     const message = `
-      Argumento obrigatório inválido ou ausente. Informe um argumento válido.
+        Invalid or missing required argument. Please provide a valid argument.
 
-      Argumentos obrigatórios: ${CLIUtils.getRequiredArgsFormatted()}
-      
-      Só é possível usar um dos argumentos obrigatórios e ele sempre deve ser o primeiro argumento a ser passado.
+        Required arguments: ${CLIUtils.getRequiredArgsFormatted()}
+
+        Only one of the required arguments may be used, and it must always be the first argument passed.
     `;
     super(message);
   }

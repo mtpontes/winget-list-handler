@@ -1,11 +1,11 @@
-import { TipoProcessamento } from "../../../domain/enum/TipoProcessamento";
+import { TypeProcess } from "../../../domain/enum/TypeProcess";
 
 export default class InvalidJsonFormat extends Error {
   constructor() {
     super(`
-        Formato inválido: esperado um array de pacotes. Corrija a formatação do
-        arquivo ${TipoProcessamento.COM_PACKAGE}.json ou rode o fluxo de geração 
-        de arquivos novamente.
+        Invalid format: expected an array of packages. Please correct the formatting of the
+        ${TypeProcess.APPS}.json file or run the file generation
+        flow again.
       `);
   }
 }

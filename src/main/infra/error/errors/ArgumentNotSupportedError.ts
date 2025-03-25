@@ -1,7 +1,7 @@
 export default class ArgumentNotSupportedError extends Error {
   constructor(argumentosNaoSuportados: Array<string>) {
     const message = `
-      Argumentos não suportados: ' + ${argumentosNaoSuportados.join(", ")}
+      Unssupported arguments: ' + ${argumentosNaoSuportados.join(", ")}
     `;
     super(message);
   }
