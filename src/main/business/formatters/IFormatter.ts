@@ -1,6 +1,6 @@
-import type { AppsComPackageType } from "../../infra/types/AppsComPackageType.js";
+import type { AppsType } from "../../infra/types/AppsType.js";
 
 export default interface Formatter {
-  formatarAppsComPacote(data: Array<Array<string>>): Array<AppsComPackageType>;
-  formatAppsSemPacote(data: Array<Array<string>>): Array<string>;
+  formatApps(data: Array<Array<string>>): Array<AppsType>;
+  formatBadApps(data: Array<Array<string>>): Array<string>;
 }

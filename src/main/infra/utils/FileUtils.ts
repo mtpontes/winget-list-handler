@@ -3,75 +3,75 @@ import { exec } from "shelljs";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import Constants from "../../domain/constants/Constants";
 import FileExtensionConst from "../../domain/constants/FileExtensionConst";
-import { TipoProcessamento } from "../../domain/enum/TipoProcessamento";
-import type { AppsComPackageType } from "../types/AppsComPackageType";
+import { TypeProcess } from "../../domain/enum/TypeProcess";
+import type { AppsType } from "../types/AppsType";
 import FileNotReadableError from "../error/errors/FileNotReadableError";
 import InvalidJsonFormat from "../error/errors/InvalidJsonFormat";
-import type { PacotesFormatadosType } from "../types/PacotesFormatados";
+import type { FormattedPackagesType } from "../types/FormattedPackagesType";
 
 /**
- * Classe de utilidade para lidar com operações de arquivo relacionadas ao manipulador da lista do Winget.
+ * Utility class to deal with file operations related to the Winget list manipulator.
  */
 export default class FileUtils {
   /**
-   * Cria o diretório para despejar arquivos de saída se ainda não existir.
+   * Creates the directory to dump output files if it doesn't already exist.
    */
-  public static criarPastaDeDespejo(): void {
+  public static createDumpFolder(): void {
     const path = Constants.FOLDER_RESULT_PATH;
     if (!existsSync(path)) mkdirSync(path, { recursive: true });
   }
 
   /**
-   * Gera um arquivo que contém a lista de aplicativos instalados usando o Winget.
-   * A saída é salva no caminho do arquivo base definido nas constantes.
+   * Generates a file containing the list of installed applications using Winget.
+   * The output is saved at the file path defined in the constants.
    */
-  public static geraArquivoDoWinget(): void {
+  public static generateWingetListFile(): void {
     exec(Constants.WINGET_LIST_COMMAND);
   }
 
   /**
-   * Lê o arquivo de saída Winget e retorna seu conteúdo como uma string.
+   * Reads the Winget output file and returns its content as a string.
    *
-   * @returns {string} O conteúdo do arquivo de saída Winget.
+   * @returns {string} The content of the Winget output file.
    */
   public static readWingetListFile(): string {
     return readFileSync(Constants.WINGET_LIST_TXT_FILE_PATH, Constants.UTF_8);
   }
 
-  static writeFails(fails: Array<AppsComPackageType>) {
+  static writeFails(fails: Array<AppsType>) {
     const failsAsText = JSON.stringify(fails, null, 2);
-    writeFileSync(this.criaOutputPathJson(TipoProcessamento.FAIL), failsAsText);
+    writeFileSync(this.createOutputPathJson(TypeProcess.FAIL), failsAsText);
   }
 
   /**
-   * Salva os dados do aplicativo processado nos arquivos de relatório JSON.
+   * Saves the processed application data into JSON report files.
    *
-   * @param {Array<AppsComPackageType>} appsComPackage - Lista de aplicativos com pacotes Winget.
-   * @param {Array<string>} appsPrejudicados - Lista de aplicativos sem pacotes Winget ou com problemas.
+   * @param {Array<AppsType>} appsWithPackage - List of apps with Winget packages.
+   * @param {Array<string>} appsWithIssues - List of apps with missing or problematic Winget packages.
    */
-  public static gravarRelatoriosJson(apps: PacotesFormatadosType): void {
-    const appsComPacoteString: string = JSON.stringify(apps.appsComPackage, null, 2);
-    const appsPrejudicadosString: string = JSON.stringify(apps.appsPrejudicados, null, 2);
+  public static recordJsonReports(apps: FormattedPackagesType): void {
+    const appsStr: string = JSON.stringify(apps.fmtApps, null, 2);
+    const badAppsStr: string = JSON.stringify(apps.fmtBadApps, null, 2);
 
-    writeFileSync(this.criaOutputPathJson(TipoProcessamento.COM_PACKAGE), appsComPacoteString);
-    writeFileSync(this.criaOutputPathJson(TipoProcessamento.PREJUDICADO), appsPrejudicadosString);
+    writeFileSync(this.createOutputPathJson(TypeProcess.APPS), appsStr);
+    writeFileSync(this.createOutputPathJson(TypeProcess.BAD_APPS), badAppsStr);
   }
 
-  private static criaOutputPathJson(tipoProcessamento: TipoProcessamento): string {
+  private static createOutputPathJson(tipoProcessamento: TypeProcess): string {
     return path.join(Constants.FOLDER_RESULT_PATH, `${tipoProcessamento + FileExtensionConst.JSON}`)
   }
 
   /**
-   * Lê e retorna a lista de pacotes a partir de um arquivo JSON.
-   * @returns {Array<AppsComPackageType>} Lista de pacotes.
-   * @throws {FileNotReadableError} Se o arquivo não puder ser lido.
-   * @throws {InvalidJsonFormat} Se o conteúdo do arquivo não for um JSON válido ou não for um array.
+   * Reads and returns the list of packages from a JSON file.
+   * @returns {Array<AppsType>} List of packages.
+   * @throws {FileNotReadableError} If the file cannot be read.
+   * @throws {InvalidJsonFormat} If the file content is not a valid JSON or is not an array.
    */
-  public static getPackages(): Array<AppsComPackageType> {
+  public static getPackages(): Array<AppsType> {
     let filePath: string = Constants.APPS_FILE_PATH;
     try {
       const packagesAsText: string = readFileSync(filePath, { encoding: Constants.UTF_8 });
-      const packages: Array<AppsComPackageType> = JSON.parse(packagesAsText);
+      const packages: Array<AppsType> = JSON.parse(packagesAsText);
       if (!Array.isArray(packages)) {
         throw new InvalidJsonFormat();
       }

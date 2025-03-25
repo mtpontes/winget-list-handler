@@ -55,19 +55,21 @@ node dist/index.js --generate-files
 
 This will create a directory and two files where `winget-handler.exe` is running:
 
-📁 **`generated_files`** → Contains the application reports.
+📁 **`generatedFiles`** → Contains the application reports.
 
 📄 **`apps-with-packages.json`** → Contains only the applications that can be automatically reinstalled via winget.
 
 📄 **`damaged-apps.json`** → Lists the applications that **cannot** be automatically reinstalled, either due to lack of support in winget or due to problems with the output of the `winget list` command.
 
-Copy the `generated_files` folder (or the entire project) to a safe location before formatting the system.
+📄 **`fails.json`** → Lists the apps that presented some errors during the installation.
+
+Copy the `generatedFiles` folder (or the entire project) to a safe location before formatting the system.
 
 ---
 
 #### 2️⃣ Consume report
 
-The application consumes the `./generated_files/apps-with-packages.json` report to perform the installations.
+The application consumes the `./generatedFiles/apps-with-packages.json` report to perform the installations.
 
 Package installation commands:
 

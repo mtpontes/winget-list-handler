@@ -1,108 +1,92 @@
 import IFormatter from '../../../main/business/formatters/IFormatter';
 import JsonFormatterImpl from '../../../main/business/formatters/JsonFormatterImpl';
-import type { AppsComPackageType } from '../../../main/infra/types/AppsComPackageType';
+import { AppsType } from '../../../main/infra/types/AppsType';
 
 describe('JsonFormatterImpl', () => {
-  let formatador: IFormatter;
+  let formatter: IFormatter;
 
   beforeEach(() => {
-    formatador = new JsonFormatterImpl();
+    formatter = new JsonFormatterImpl();
   });
 
-  describe('formatarAppsComPackage', () => {
-    it('deve formatar corretamente uma lista válida de aplicativos com pacotes completos', () => {
+  describe('formatApps', () => {
+    it('should correctly format a valid list of apps with complete packages', () => {
       // Given
       const apps: Array<Array<string>> = [
         ['App1', '12345', '1.0.0'],
         ['App2', '67890']
       ];
-      const expected: Array<AppsComPackageType> = [
-        { nome: 'App1', id: '12345', version: '1.0.0' },
-        { nome: 'App2', id: '67890', version: null }
-      ]
+      const expected: Array<AppsType> = [
+        { name: 'App1', id: '12345', version: '1.0.0' },
+        { name: 'App2', id: '67890', version: null }
+      ];
 
       // When
-      const resultado = formatador.formatarAppsComPacote(apps);
+      const result = formatter.formatApps(apps);
 
       // Then
-      expect(resultado).toEqual(expected);
+      expect(result).toEqual(expected);
     });
 
-    it('deve ignorar entradas com nomes vazios ou em branco', () => {
+    it('should ignore entries with empty or whitespace-only names', () => {
       // Given
       const apps: Array<Array<string>> = [
         [' ', '00000', '1.0.0'],
         ['', '11111'],
         ['App3', '22222']
       ];
-      const expected: Array<AppsComPackageType> = [{ nome: 'App3', id: '22222', version: null }]
+      const expected: Array<AppsType> = [{ name: 'App3', id: '22222', version: null }];
 
       // When
-      const resultado = formatador.formatarAppsComPacote(apps);
+      const result = formatter.formatApps(apps);
 
       // Then
-      expect(resultado).toEqual(expected);
+      expect(result).toEqual(expected);
     });
 
-    it('deve ignorar entradas com nomes vazios ou em branco', () => {
-      // Given
-      const apps: Array<Array<string>> = [
-        [' ', '00000', '1.0.0'],
-        ['', '11111'],
-        ['App3', '22222']
-      ];
-      const expected: Array<AppsComPackageType> = [{ nome: 'App3', id: '22222', version: null }]
-
-      // When
-      const resultado = formatador.formatarAppsComPacote(apps);
-
-      // Then
-      expect(resultado).toEqual(expected);
-    });
-
-    it('deve retornar um array vazio se todas as entradas forem inválidas', () => {
+    it('should return an empty array if all entries are invalid', () => {
       // Given
       const apps: Array<Array<string>> = [
         ['', '12345'],
         [' ', '67890']
       ];
-      const expected: Array<AppsComPackageType> = []
+      const expected: Array<AppsType> = [];
 
       // When
-      const resultado = formatador.formatarAppsComPacote(apps);
+      const result = formatter.formatApps(apps);
 
       // Then
-      expect(resultado).toEqual(expected);
+      expect(result).toEqual(expected);
     });
 
-    it('deve lidar corretamente com uma lista vazia', () => {
+    it('should handle an empty list correctly', () => {
       // Given and When
-      const resultado = formatador.formatarAppsComPacote([]);
-      const expected: Array<AppsComPackageType> = []
+      const result = formatter.formatApps([]);
+      const expected: Array<AppsType> = [];
 
       // Then
-      expect(resultado).toEqual(expected);
+      expect(result).toEqual(expected);
     });
   });
 
-  describe('formatarAppsPrejudicados', () => {
+  describe('formatBadApps', () => {
 
-    it('deve formatar corretamente uma lista válida de aplicativos prejudicados', () => {
+    it('should correctly format a valid list of problematic apps', () => {
       // Given
       const apps: Array<Array<string>> = [
         ['App1'],
         ['App2']
       ];
-      const expected: Array<string> = ['App1', 'App2']
+      const expected: Array<string> = ['App1', 'App2'];
 
       // When
-      const resultado: Array<string> = formatador.formatAppsSemPacote(apps);
+      const result: Array<string> = formatter.formatBadApps(apps);
 
       // Then
-      expect(resultado).toEqual(expected);
+      expect(result).toEqual(expected);
     });
 
-    it('deve ignorar nomes vazios ou em branco', () => {
+    it('should ignore empty or whitespace-only names', () => {
       // Given
       const apps: Array<Array<string>> = [
         ['App1'],
@@ -110,37 +94,37 @@ describe('JsonFormatterImpl', () => {
         [''],
         ['App2']
       ];
-      const expected: Array<string> = ['App1', 'App2']
+      const expected: Array<string> = ['App1', 'App2'];
 
       // When
-      const resultado: Array<string> = formatador.formatAppsSemPacote(apps);
+      const result: Array<string> = formatter.formatBadApps(apps);
 
       // Then
-      expect(resultado).toEqual(expected);
+      expect(result).toEqual(expected);
     });
 
-    it('deve retornar um array vazio se todas as entradas forem inválidas', () => {
+    it('should return an empty array if all entries are invalid', () => {
       // Given
       const apps: Array<Array<string>> = [[' '], ['']];
-      const expected: Array<string> = []
+      const expected: Array<string> = [];
 
       // When
-      const resultado: Array<string> = formatador.formatAppsSemPacote(apps);
+      const result: Array<string> = formatter.formatBadApps(apps);
 
       // Then
-      expect(resultado).toEqual(expected);
+      expect(result).toEqual(expected);
     });
 
-    it('deve lidar corretamente com uma lista vazia', () => {
+    it('should handle an empty list correctly', () => {
       // Given
-      const entrada: Array<Array<string>> = []
-      const expected: Array<string> = []
+      const input: Array<Array<string>> = [];
+      const expected: Array<string> = [];
 
       // When
-      const resultado: Array<string> = formatador.formatAppsSemPacote(entrada);
+      const result: Array<string> = formatter.formatBadApps(input);
 
       // Then
-      expect(resultado).toEqual(expected);
+      expect(result).toEqual(expected);
     });
   });
 });

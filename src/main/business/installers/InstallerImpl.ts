@@ -4,19 +4,19 @@ import { Queue } from "async-await-queue";
 import type IInstaller from "./IInstaller";
 import Constants from "../../domain/constants/Constants";
 import type { ArgsType } from "../../infra/types/ArgsType";
-import type { AppsComPackageType } from "../../infra/types/AppsComPackageType";
+import type { AppsType } from "../../infra/types/AppsType";
 import FileUtils from "../../infra/utils/FileUtils";
 const { exec } = shelljs;
 
 export default class InstallerImpl implements IInstaller {
   /**
-   * Instala os pacotes de forma síncrona, um por vez.
+   * Installs the packages synchronously, one at a time.
    *
-   * @param {Array<AppsComPackageType>} packages - Lista de pacotes a serem instalados.
+   * @param {Array<AppsType>} packages - List of packages to be installed.
    */
-  private instalacaoSync(packages: Array<AppsComPackageType>): void {
+  private installationSync(packages: Array<AppsType>): void {
     for (const pkg of packages) {
-      const command = `${Constants.ARQUIVO_BAT} ${pkg.id}`;
+      const command = `${Constants.FILE_BAT} ${pkg.id}`;
       console.log(command);
 
       exec(command, { silent: false });
@@ -25,39 +25,39 @@ export default class InstallerImpl implements IInstaller {
   }
 
   /**
-   * Instala os pacotes de forma assíncrona, com controle de concorrência.
+   * Installs the packages asynchronously, with concurrency control.
    *
-   * @param {Array<AppsComPackageType>} packages - Lista de pacotes a serem instalados.
-   * @param {number} concurrency - Número máximo de instalações simultâneas.
-   * @returns {Promise<void>} Uma Promise que resolve quando todos os pacotes forem instalados.
+   * @param {Array<AppsType>} packages - List of packages to be installed.
+   * @param {number} concurrency - Maximum number of simultaneous installations.
+   * @returns {Promise<void>} A Promise that resolves when all packages are installed.
    */
-  private async instalacaoAsync(packages: Array<AppsComPackageType>, concurrency: number): Promise<void> {
-    console.log(`Iniciando a instalação de ${packages.length} pacotes com concorrência de ${concurrency}.`);
-    const fails: Array<AppsComPackageType> = [];
+  private async installationAsync(packages: Array<AppsType>, concurrency: number): Promise<void> {
+    console.log(`Starting installation of ${packages.length} packages with concurrency of ${concurrency}.`);
+    const fails: Array<AppsType> = [];
 
     const queue = new Queue(concurrency);
 
     const installPromises = packages.map((pkg, index) =>
       queue.run(async () => {
-        const command = `${Constants.ARQUIVO_BAT} ${pkg.nome}`;
+        const command = `${Constants.FILE_BAT} ${pkg.name}`;
         console.log(
-          `${this.indexarPacotes(index, packages.length)} Iniciando instalação do pacote ${pkg.nome} com o comando: ${command}`
+          `${this.indexPackages(index, packages.length)} Starting installation of package ${pkg.name} with the command: ${command}`
         );
 
         try {
           await new Promise((resolve, reject) => {
             exec(command, { silent: false, async: true }, (code, stdout) => {
               if (code !== Constants.ZERO) {
-                console.error(`${this.indexarPacotes(index, packages.length)} Erro ao instalar o pacote ${pkg.nome}:`, code);
+                console.error(`${this.indexPackages(index, packages.length)} Error installing the package ${pkg.name}:`, code);
                 reject(code);
               } else {
-                console.log(`${this.indexarPacotes(index, packages.length)} Pacote ${pkg.nome} instalado com sucesso.`);
+                console.log(`${this.indexPackages(index, packages.length)} Package ${pkg.name} installed successfully.`);
                 resolve(stdout);
               }
             });
           });
         } catch (error) {
-          console.error(`${this.indexarPacotes(index, packages.length)} Falha na instalação do pacote ${pkg.nome}.`, error);
+          console.error(`${this.indexPackages(index, packages.length)} Failure to install the package ${pkg.name}.`, error);
           fails.push(pkg);
         }
       })
@@ -67,24 +67,24 @@ export default class InstallerImpl implements IInstaller {
     if (fails.length > 0) FileUtils.writeFails(fails);
   }
 
-  private indexarPacotes(index: number, totalPackages: number): string {
-    return `[Pacote ${index + 1}/${totalPackages}]`;
+  private indexPackages(index: number, totalPackages: number): string {
+    return `[Package ${index + 1}/${totalPackages}]`;
   }
 
   /**
-   * Instala os pacotes de acordo com a opção de execução (síncrona ou assíncrona).
+   * Installs the packages based on the execution option (synchronous or asynchronous).
    *
-   * @param {Array<AppsComPackageType>} packages - Lista de pacotes a serem instalados.
-   * @param {Object} args - Opções de instalação.
-   * @param {boolean} args.isAsync - Se true, a instalação será assíncrona.
-   * @param {number} args.concurrency - Número máximo de instalações simultâneas (apenas para instalação assíncrona).
-   * @returns {Promise<void>} Uma Promise que resolve quando a instalação for concluída.
+   * @param {Array<AppsType>} packages - List of packages to be installed.
+   * @param {Object} args - Installation options.
+   * @param {boolean} args.isAsync - If true, the installation will be asynchronous.
+   * @param {number} args.concurrency - Maximum number of simultaneous installations (only for asynchronous installation).
+   * @returns {Promise<void>} A Promise that resolves when the installation is completed.
    */
-  public async install(packages: Array<AppsComPackageType>, args: ArgsType): Promise<void> {
+  public async install(packages: Array<AppsType>, args: ArgsType): Promise<void> {
     if (!args.isAsync) {
-      this.instalacaoSync(packages);
+      this.installationSync(packages);
     } else {
-      this.instalacaoAsync(packages, args.concurrency!);
+      this.installationAsync(packages, args.concurrency!);
     }
   }
 }

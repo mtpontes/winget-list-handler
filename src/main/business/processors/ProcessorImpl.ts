@@ -1,86 +1,76 @@
 import IProcessor from "./IProcessor";
 import Constants from "../../domain/constants/Constants";
 import BadPackagesConst from "../../domain/constants/BadPackagesConst";
-import { PacotesProcessadosType } from "../../infra/types/PacotesProcessados";
+import { ProcessedPackagesType } from "../../infra/types/ProcessedPackagesType";
 
 /**
- * Classe responsável por processar dados formatados em texto, extraindo informações úteis
- * e segregando os aplicativos com pacotes completos e os que possuem pacotes ausentes ou prejudicados.
+ *Class responsible for processing formatted text data, extracting useful information
+ *and segregating applications with complete packages and those with absent or impaired packages.
  */
 export default class ProcessorImpl implements IProcessor {
   /**
-   * Filtra e estrutura dados formatados em linhas para um array de arrays de strings.
+   * Filters and structures formatted data into an array of arrays of strings.
    *
-   * A função identifica onde os dados úteis começam, ignorando cabeçalhos e separadores,
-   * e processa cada linha relevante dividindo os textos com base em dois ou mais espaços consecutivos.
+   * The function identifies where the useful data starts by ignoring headers and separators,
+   * and processes each relevant line by splitting the text based on two or more consecutive spaces.
    *
    * @private
-   * @param {string} data - A string de entrada contendo os dados formatados em linhas.
+   * @param {string} data - The input string containing formatted data in lines.
    *
-   * @returns {Array<Array<string>>} Um array de arrays de strings, onde cada subarray
-   * representa uma linha útil da entrada, com os textos divididos em colunas.
+   * @returns {Array<Array<string>>} An array of arrays of strings, where each subarray
+   * represents a useful line from the input, with the text split into columns.
    */
-  private estruturarDadosDeLeitura(data: string): Array<Array<string>> {
-    let linhas: Array<string> = data.split("\n");
-    const indiceDeComecoDosDadosUteis = linhas.findIndex((linha) => linha.includes(Constants.ID));
-    linhas = linhas.slice(indiceDeComecoDosDadosUteis + 2);
-    return linhas.map((linha) => linha.split(/\s{2,}/));
+  private structureReadingData(data: string): Array<Array<string>> {
+    let rows: Array<string> = data.split("\n");
+    const indexOfStartOfUsefulData = rows.findIndex((row) => row.includes(Constants.ID));
+    return rows
+      .slice(indexOfStartOfUsefulData + 2) // Removes redundant artifacts
+      .map((row) => row.split(/\s{2,}/)) // Break the lines in columns
+      .map((row) => row.slice(0, 3)) // Remove redundant columns
   }
 
   /**
-   * Remove colunas irrelevantes, mantendo apenas os índices 0, 1 e 2 (Nome, ID e Versão).
+   * Segregates the applications into two groups: those with complete packages and those with missing or broken packages.
    *
-   * @param {Array<Array<string>>} data - Lista de arrays, onde cada array representa uma linha de dados.
-   * @returns {Array<Array<string>>} Lista processada contendo apenas as colunas relevantes.
-   */
-  private removerColunasIrrelevantes(data: Array<Array<string>>): Array<Array<string>> {
-    return data.map((linha) => linha.slice(0, 3));
-  }
-
-  /**
-   * Segrega os aplicativos em dois grupos: com pacotes completos e com pacotes ausentes ou prejudicados.
-   *
-   * A função processa os dados de entrada, separando linhas que representam aplicativos com pacotes completos
-   * das linhas que indicam aplicativos com ausência ou prejuízo de pacotes, com base em identificadores predefinidos.
+   * The function processes the input data, separating lines that represent applications with complete packages
+   * from lines indicating applications with missing or broken packages, based on predefined identifiers.
    *
    * @private
-   * @param {Array<Array<string>>} data - Um array de arrays de strings, onde cada subarray representa uma linha de dados.
+   * @param {Array<Array<string>>} data - An array of arrays of strings, where each subarray represents a data line.
    *
-   * @returns {PacotesProcessadosType} Um objeto contendo dois grupos de aplicativos:
-   * - `appsComPackage`: Um array de arrays de strings contendo as linhas que representam aplicativos com pacotes completos.
-   * - `appsPrejudicados`: Um array de arrays de strings contendo as linhas que representam aplicativos com ausência ou prejuízo de pacotes.
+   * @returns {ProcessedPackagesType} An object containing two groups of applications:
+   * - `appsWithPackage`: An array of arrays of strings containing the lines representing applications with complete packages.
+   * - `appsWithIssues`: An array of arrays of strings containing the lines representing applications with missing or broken packages.
    */
-  private segregarTiposDeApps(data: Array<Array<string>>): PacotesProcessadosType {
-    const appsComPackage: Array<Array<string>> = data.filter((linha) =>
-      linha.every(
-        (coluna) =>
-          !coluna.trim().includes(BadPackagesConst.AUSENCIA_DE_PACOTE) &&
-          !coluna.trim().includes(BadPackagesConst.PREJUIZO_DE_PACOTE)
+  private segregateAppTypes(data: Array<Array<string>>): ProcessedPackagesType {
+    const pcdApps: Array<Array<string>> = data.filter((line) =>
+      line.every((column) =>
+        !column.trim().includes(BadPackagesConst.MISSING_PACKAGE) &&
+        !column.trim().includes(BadPackagesConst.BROKEN_PACKAGE)
       )
     );
 
-    const appsPrejudicados: Array<Array<string>> = data.filter((linha) =>
-      linha.some(
-        (texto) =>
-          texto.includes(BadPackagesConst.AUSENCIA_DE_PACOTE) || texto.includes(BadPackagesConst.PREJUIZO_DE_PACOTE)
+    const pcdBadApps: Array<Array<string>> = data.filter((line) =>
+      line.some((text) =>
+        text.includes(BadPackagesConst.MISSING_PACKAGE) ||
+        text.includes(BadPackagesConst.BROKEN_PACKAGE)
       )
     );
 
-    return { appsComPackage, appsPrejudicados };
+    return { pcdApps, pcdBadApps };
   }
 
   /**
-   * Processa os dados formatados, estruturando e segregando os aplicativos com base na sua integridade.
+   * Processes the formatted data, structuring and segregating applications based on their integrity.
    *
-   * @param {string} data - A string contendo os dados formatados em linhas.
+   * @param {string} data - A string containing the formatted data in lines.
    *
-   * @returns {PacotesProcessadosType} Um objeto contendo dois grupos de aplicativos:
-   * - `appsComPackage`: Um array de arrays de strings contendo as linhas que representam aplicativos com pacotes completos.
-   * - `appsPrejudicados`: Um array de arrays de strings contendo as linhas que representam aplicativos com ausência ou prejuízo de pacotes.
+   * @returns {ProcessedPackagesType} An object containing two groups of applications:
+   * - `appsWithPackage`: An array of arrays of strings containing the lines representing applications with complete packages.
+   * - `appsWithIssues`: An array of arrays of strings containing the lines representing applications with missing or broken packages.
    */
-  public process(data: string): PacotesProcessadosType {
-    let structuredData: Array<Array<string>> = this.estruturarDadosDeLeitura(data);
-    structuredData = this.removerColunasIrrelevantes(structuredData);
-    return this.segregarTiposDeApps(structuredData);
+  public process(data: string): ProcessedPackagesType {
+    const structuredData: Array<Array<string>> = this.structureReadingData(data);
+    return this.segregateAppTypes(structuredData);
   }
 }

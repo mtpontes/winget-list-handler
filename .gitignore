@@ -132,8 +132,8 @@ dist
 # project
 test.js
 
-apps-com-pacotes.*
-apps-prejudicados.*
+apps**
+badApps**
 **.txt
 .vscode/
 

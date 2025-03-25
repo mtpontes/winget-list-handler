@@ -9,47 +9,38 @@ describe('ProcessorImpl', () => {
     processor = new ProcessorImpl();
   });
 
-  describe('estruturarDadosDeLeitura', () => {
-    it('deve estruturar os dados corretamente', () => {
-      const data = `Cabeçalho\n${Constants.ID}\nSeparador\nApp1  ID1  v1.0\nApp2  ID2  v2.0`;
+  describe('structureReadingData', () => {
+    it('should structure the data correctly', () => {
+      const data = `Header\n${Constants.ID}\nSeparator\nApp1  ID1  v1.0\nApp2  ID2  v2.0`;
       const expected = [['App1', 'ID1', 'v1.0'], ['App2', 'ID2', 'v2.0']];
-      const result = processor['estruturarDadosDeLeitura'](data);
+      const result = processor['structureReadingData'](data);
       expect(result).toEqual(expected);
     });
   });
 
-  describe('removerColunasIrrelevantes', () => {
-    it('deve remover colunas irrelevantes', () => {
-      const data = [['App1', 'ID1', 'v1.0', 'Extra1'], ['App2', 'ID2', 'v2.0', 'Extra2']];
-      const expected = [['App1', 'ID1', 'v1.0'], ['App2', 'ID2', 'v2.0']];
-      const result = processor['removerColunasIrrelevantes'](data);
-      expect(result).toEqual(expected);
-    });
-  });
-
-  describe('segregarTiposDeApps', () => {
-    it('deve segregar apps com pacotes completos e prejudicados', () => {
+  describe('segregateAppTypes', () => {
+    it('should segregate apps with complete and broken packages', () => {
       const data = [
         ['App1', 'ID1', 'v1.0'],
-        ['App2', 'ID2', BadPackagesConst.AUSENCIA_DE_PACOTE],
-        ['App3', 'ID3', BadPackagesConst.PREJUIZO_DE_PACOTE],
+        ['App2', 'ID2', BadPackagesConst.MISSING_PACKAGE],
+        ['App3', 'ID3', BadPackagesConst.BROKEN_PACKAGE],
         ['App4', 'ID4', 'v4.0']
       ];
       const expected = {
-        appsComPackage: [['App1', 'ID1', 'v1.0'], ['App4', 'ID4', 'v4.0']],
-        appsPrejudicados: [['App2', 'ID2', BadPackagesConst.AUSENCIA_DE_PACOTE], ['App3', 'ID3', BadPackagesConst.PREJUIZO_DE_PACOTE]]
+        pcdApps: [['App1', 'ID1', 'v1.0'], ['App4', 'ID4', 'v4.0']],
+        pcdBadApps: [['App2', 'ID2', BadPackagesConst.MISSING_PACKAGE], ['App3', 'ID3', BadPackagesConst.BROKEN_PACKAGE]]
       };
-      const result = processor['segregarTiposDeApps'](data);
+      const result = processor['segregateAppTypes'](data);
       expect(result).toEqual(expected);
     });
   });
 
   describe('process', () => {
-    it('deve processar os dados corretamente', () => {
-      const data = `Cabeçalho\n${Constants.ID}\nSeparador\nApp1  ID1  v1.0  Extra1\nApp2  ID2  ${BadPackagesConst.AUSENCIA_DE_PACOTE}  Extra2`;
+    it('should process the data correctly', () => {
+      const data = `Header\n${Constants.ID}\nSeparator\nApp1  ID1  v1.0  Extra1\nApp2  ID2  ${BadPackagesConst.MISSING_PACKAGE}  Extra2`;
       const expected = {
-        appsComPackage: [['App1', 'ID1', 'v1.0']],
-        appsPrejudicados: [['App2', 'ID2', BadPackagesConst.AUSENCIA_DE_PACOTE]]
+        pcdApps: [['App1', 'ID1', 'v1.0']],
+        pcdBadApps: [['App2', 'ID2', BadPackagesConst.MISSING_PACKAGE]]
       };
       const result = processor.process(data);
       expect(result).toEqual(expected);

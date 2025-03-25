@@ -1,23 +1,23 @@
 /**
- * Classe que define identificadores textuais padrão usados para categorizar dados.
+ * Class that defines standard textual identifiers used to categorize data.
  */
 export default class BadPackagesConst {
   /**
-   * Identificador textual que representa a ausência de pacote no app.
+   * Textual identifier representing the absence of a package in the app.
    *
-   * Geralmente corresponde ao termo `ARP`, indicando que um aplicativo não possui um pacote completo.
+   * Typically corresponds to the term `ARP`, indicating that an application lacks a complete package.
    * @type {string}
    */
-  static AUSENCIA_DE_PACOTE = "ARP";
+  static MISSING_PACKAGE = "ARP";
 
   /**
-   * Identificador textual que representa pacotes prejudicados pelo caractere de elipsis (`…`)
-   * adicionado pelo winget em caso de nomes muito longos.
+   * Textual identifier representing packages damaged by the ellipsis character (`…`)
+   * added by winget in case of very long names.
    *
-   * Normalmente só se aplica a pacotes internos do Windows.
+   * Typically applies only to internal Windows packages.
    *
-   * Indica que há algum problema ou limitação no pacote do aplicativo.
+   * Indicates that there is an issue or limitation with the application's package.
    * @type {string}
    */
-  static PREJUIZO_DE_PACOTE = "…";
+  static BROKEN_PACKAGE = "…";
 }

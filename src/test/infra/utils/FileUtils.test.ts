@@ -1,57 +1,55 @@
 import path from 'node:path';
-import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import Constants from '../../../main/domain/constants/Constants';
 import FileExtensionConst from '../../../main/domain/constants/FileExtensionConst';
-import { TipoProcessamento } from '../../../main/domain/enum/TipoProcessamento';
-import type { AppsComPackageType } from '../../../main/infra/types/AppsComPackageType';
-import FileUtils from '../../../main/infra/utils/FileUtils'
+import { TypeProcess } from '../../../main/domain/enum/TypeProcess';
+import type { AppsType } from '../../../main/infra/types/AppsType';
+import FileUtils from '../../../main/infra/utils/FileUtils';
 import InvalidJsonFormat from '../../../main/infra/error/errors/InvalidJsonFormat';
 import FileNotReadableError from '../../../main/infra/error/errors/FileNotReadableError';
-import type { PacotesFormatadosType } from '../../../main/infra/types/PacotesFormatados';
+import type { FormattedPackagesType } from '../../../main/infra/types/FormattedPackagesType';
 
-const DIRETORIO_DE_TESTE = './src/test/utils/'
+const TEST_DIRECTORY = './src/test/infra/utils/';
 
 describe('FileUtils', () => {
   afterEach(() => {
     jest.resetModules();
     jest.restoreAllMocks();
-  })
+  });
 
-  describe('gravarRelatoriosJson', () => {
-
-    const folderName = 'gerar-arquivo-teste'
+  describe('recordJsonReports', () => {
+    const folderName = 'generate-file-test';
     const folderPathTests = path.join(__dirname, folderName);
 
     beforeEach(() => {
       if (!existsSync(folderPathTests)) mkdirSync(folderPathTests, { recursive: true });
-      Constants.FOLDER_RESULT_PATH = DIRETORIO_DE_TESTE + folderName
-    })
+      Constants.FOLDER_RESULT_PATH = TEST_DIRECTORY + folderName;
+    });
 
     afterEach(() => {
       rmSync(folderPathTests, { recursive: true, force: true });
-    })
+    });
 
-    it('deve gravar os relatórios JSON corretamente', () => {
+    it('should correctly record the JSON reports', () => {
       // Given
-      const entrada: PacotesFormatadosType = {
-        appsComPackage: [{ nome: 'App1', id: '1234', version: '1.0' }],
-        appsPrejudicados: ['app1', 'app2']
-      }
+      const input: FormattedPackagesType = {
+        fmtApps: [{ name: 'App1', id: '1234', version: '1.0' }],
+        fmtBadApps: ['app1', 'app2']
+      };
 
-      const expectComPackage: string = JSON.stringify(entrada.appsComPackage, null, 2)
-      const expectSemPackage: string = JSON.stringify(entrada.appsPrejudicados, null, 2)
+      const expectedWithPackage: string = JSON.stringify(input.fmtApps, null, 2);
+      const expectedWithoutPackage: string = JSON.stringify(input.fmtBadApps, null, 2);
 
       // When
-
-      FileUtils.gravarRelatoriosJson(entrada);
-      const caminhoComPackage: string = path.join(folderPathTests, `${TipoProcessamento.COM_PACKAGE}${FileExtensionConst.JSON}`);
-      const caminhoPrejudicado: string = path.join(folderPathTests, `${TipoProcessamento.PREJUDICADO}${FileExtensionConst.JSON}`);
-      const conteudoComPackage: string = readFileSync(caminhoComPackage, 'utf8');
-      const conteudoPrejudicado: string = readFileSync(caminhoPrejudicado, 'utf8');
+      FileUtils.recordJsonReports(input);
+      const pathWithPackage: string = path.join(folderPathTests, `${TypeProcess.APPS}${FileExtensionConst.JSON}`);
+      const pathDamaged: string = path.join(folderPathTests, `${TypeProcess.BAD_APPS}${FileExtensionConst.JSON}`);
+      const contentWithPackage: string = readFileSync(pathWithPackage, 'utf8');
+      const contentDamaged: string = readFileSync(pathDamaged, 'utf8');
 
       // Then
-      expect(conteudoComPackage).toEqual(expectComPackage)
-      expect(conteudoPrejudicado).toEqual(expectSemPackage)
+      expect(contentWithPackage).toEqual(expectedWithPackage);
+      expect(contentDamaged).toEqual(expectedWithoutPackage);
     });
   });
 
@@ -68,14 +66,14 @@ describe('FileUtils', () => {
       rmSync(folderPathTests, { recursive: true, force: true });
     });
 
-    it('deve retornar a lista de pacotes corretamente quando o arquivo JSON é válido', () => {
+    it('should return the list of packages correctly when the JSON file is valid', () => {
       // Given
-      Constants.APPS_FILE_PATH = path.join(folderPathTests, `${TipoProcessamento.COM_PACKAGE}${FileExtensionConst.JSON}`)
-      const expectedPackages: Array<AppsComPackageType> = [
-        { nome: 'App1', id: '1234', version: '1.0' },
-        { nome: 'App2', id: '5678', version: '2.0' },
+      Constants.APPS_FILE_PATH = path.join(folderPathTests, `${TypeProcess.APPS}${FileExtensionConst.JSON}`);
+      const expectedPackages: Array<AppsType> = [
+        { name: 'App1', id: '1234', version: '1.0' },
+        { name: 'App2', id: '5678', version: '2.0' },
       ];
-      const filePath = path.join(folderPathTests, `${TipoProcessamento.COM_PACKAGE}${FileExtensionConst.JSON}`);
+      const filePath = path.join(folderPathTests, `${TypeProcess.APPS}${FileExtensionConst.JSON}`);
       writeFileSync(filePath, JSON.stringify(expectedPackages, null, 2));
 
       // When
@@ -85,17 +83,17 @@ describe('FileUtils', () => {
       expect(packages).toEqual(expectedPackages);
     });
 
-    it('deve lançar InvalidJsonFormat quando o conteúdo do arquivo não é um array', () => {
+    it('should throw InvalidJsonFormat when the file content is not an array', () => {
       // Given
-      const invalidJsonContent = { nome: 'App1', id: '1234', version: '1.0' };
-      const filePath = path.join(folderPathTests, `${TipoProcessamento.COM_PACKAGE}${FileExtensionConst.JSON}`);
+      const invalidJsonContent = { name: 'App1', id: '1234', version: '1.0' };
+      const filePath = path.join(folderPathTests, `${TypeProcess.APPS}${FileExtensionConst.JSON}`);
       writeFileSync(filePath, JSON.stringify(invalidJsonContent, null, 2));
 
       // When / Then
       expect(() => FileUtils.getPackages()).toThrow(InvalidJsonFormat);
     });
 
-    it('deve lançar FileNotReadableError quando o arquivo não pode ser lido', () => {
+    it('should throw FileNotReadableError when the file cannot be read', () => {
       // Given
       const nonExistentFilePath = path.join(folderPathTests, 'non-existent-file.json');
 
