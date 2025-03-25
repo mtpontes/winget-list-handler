@@ -4,7 +4,7 @@
 
 This project automates the process of reinstalling applications after reinstall the system. Using winget, it allows you to generate a report with all applications installed on Windows (including those that were not installed via winget) and facilitates the automatic reinstallation of compatible apps.
 
-In addition, if an application cannot be installed automatically, the project generates a report (`apps_prejudicados.json`) indicating which apps still need to be installed manually.
+In addition, if an application cannot be installed automatically, the project generates a report (`badApps.json`) indicating which apps still need to be installed manually.
 
 If you are a developer and want to contribute or customize the tool, see the [Instructions for Developers](https://github.com/mtpontes/winget-list-handler/blob/main/README_DEV.md) section.
 
@@ -70,15 +70,15 @@ winget-handler --generate-files
 
 This will create a directory and two files where `winget-handler.exe` is running:
 
-📁 **`arquivos_gerados`** → Contains the application reports.
+📁 **`generatedFiles`** → Contains the application reports.
 
-📄 **`apps-com-pacotes.json`** → Contains only the applications that can be reinstalled automatically via winget. It is crucial for the next step and operation of the solution.
+📄 **`apps.json`** → Contains only the applications that can be reinstalled automatically via winget. It is crucial for the next step and operation of the solution.
 
-📄 **`apps-prejudicados.json`** → Lists the applications that **cannot** be reinstalled automatically, either due to lack of support in winget or due to problems with the output of the `winget list` command.
+📄 **`badApps.json`** → Lists the applications that **cannot** be reinstalled automatically, either due to lack of support in winget or due to problems with the output of the `winget list` command.
 
-📄 **`fail.json`** → Lists the apps that presented some errors during the installation.
+📄 **`fails.json`** → Lists the apps that presented some errors during the installation.
 
-Copy the `arquivos_gerados` directory and the `winget-handler.exe` executable to a safe.
+Copy the `generatedFiles` directory and the `winget-handler.exe` executable to a safe.
 
 After that, you can reinstall the system.
 
@@ -86,7 +86,7 @@ After that, you can reinstall the system.
 
 ### 3️⃣ Install applications after reinstalling the system
 
-After reinstall the system, recover the `arquivos_gerados` directory and the `winget-handler.exe` executable.
+After reinstall the system, recover the `generatedFiles` directory and the `winget-handler.exe` executable.
 
 Then, run one of the three commands:
 
@@ -137,7 +137,7 @@ This process may take a while, as it depends on the speed of the package servers
 ## ❓ Known Issues
 
 - **Winget is not installed/configured**: Make sure Winget is installed and configured correctly.
-- **Some applications were not reinstalled**: Check the `apps-prejudicados.json` file and install manually.
+- **Some applications were not reinstalled**: Check the `badApps.json` file and install manually.
 - **Error running the executable**: Run as administrator and try again.
 - **The app does not find the file exec.bat**: Keep the exec.bat file at the same ``.exe`` application level level. The .bat file was the way I found to circumvent some terminal limitations. For some specific applications it is necessary to insert a second input that may vary from package to package, but when the execution is done via .BAT This second input is ignored and the winget follows the normal flow.
 

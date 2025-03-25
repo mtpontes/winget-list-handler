@@ -4,7 +4,7 @@
 
 Este projeto automatiza o processo de reinstalação de aplicativos após formatar o sistema. Utilizando o winget, ele permite gerar um relatório com todos os aplicativos instalados no Windows (incluindo aqueles que não foram instalados via winget) e facilita a reinstalação automática dos apps compatíveis.
 
-Além disso, caso algum aplicativo não possa ser instalado automaticamente, o projeto gera um relatório (`apps_prejudicados.json`) indicando quais apps ainda precisam ser instalados manualmente.
+Além disso, caso algum aplicativo não possa ser instalado automaticamente, o projeto gera um relatório (`badApps.json`) indicando quais apps ainda precisam ser instalados manualmente.
 
 Se você é um desenvolvedor e deseja contribuir ou personalizar a ferramenta, veja a seção [Instruções para Desenvolvedores](https://github.com/mtpontes/winget-list-handler/blob/main/README_DEV.md).
 
@@ -70,15 +70,15 @@ winget-handler --generate-files
 
 Isso criará um diretório e dois arquivos onde o `winget-handler.exe` estiver sendo executado:
 
-📁 **`arquivos_gerados`** → Contém os relatórios de aplicativos.
+📁 **`generatedFiles`** → Contém os relatórios de aplicativos.
 
-📄 **`apps-com-pacotes.json`** → Contém apenas os aplicativos que podem ser reinstalados automaticamente via winget. É crucial para a próxima etapa e funcionamento da solução.
+📄 **`apps.json`** → Contém apenas os aplicativos que podem ser reinstalados automaticamente via winget. É crucial para a próxima etapa e funcionamento da solução.
 
-📄 **`apps-prejudicados.json`** → Lista os aplicativos que **não** podem ser reinstalados automaticamente, seja por falta de suporte no winget ou por problemas na saída do comando `winget list`.
+📄 **`badApps.json`** → Lista os aplicativos que **não** podem ser reinstalados automaticamente, seja por falta de suporte no winget ou por problemas na saída do comando `winget list`.
 
-📄 **`fail.json`** → Lista os apps que apresentaram algum erro durante a instalação.
+📄 **`fails.json`** → Lista os apps que apresentaram algum erro durante a instalação.
 
-Copie o diretório `arquivos_gerados` e o executável `winget-handler.exe` para um local seguro, livre de formatação.
+Copie o diretório `generatedFiles` e o executável `winget-handler.exe` para um local seguro, livre de formatação.
 
 Após isso já é possível formatar o sistema.
 
@@ -86,7 +86,7 @@ Após isso já é possível formatar o sistema.
 
 ### 3️⃣ Reinstalar os aplicativos após a formatação
 
-Após formatar o sistema, recupere o diretório `arquivos_gerados` e o executável `winget-handler.exe`.
+Após formatar o sistema, recupere o diretório `generatedFiles` e o executável `winget-handler.exe`.
 
 Então, execute um dos três comandos:
 
@@ -137,7 +137,7 @@ Esse processo pode demorar, pois depende da velocidade dos servidores dos pacote
 ## ❓ Problemas Conhecidos
 
 - **O Winget não está instalado/configurado**: Certifique-se de que o Winget está instalado e configurado corretamente.
-- **Alguns aplicativos não foram reinstalados**: Verifique o arquivo `apps-prejudicados.json` e instale manualmente.
+- **Alguns aplicativos não foram reinstalados**: Verifique o arquivo `badApps.json` e instale manualmente.
 - **Erro ao rodar o executável**: Execute como administrador e tente novamente.
 - **O app não encontra o arquivo exec.bat**: Mantenha o arquivo exec.bat no mesmo nível de diretório do ``.exe`` da aplicação. O arquivo .bat foi a forma que encontrei de driblar algumas limitações de terminal. Para algumas aplicações específicas é necessário inserir um segundo input que pode variar de pacote para pacote, mas quando a execução é feita via .bat esse segundo input é ignorado e o winget segue o fluxo normal.
 
