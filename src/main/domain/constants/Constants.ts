@@ -8,7 +8,7 @@ export default class Constants {
   public static ID = "ID";
   public static ZERO = 0;
 
-  public static FOLDER_RESULT_NAME = "generated_files";
+  public static FOLDER_RESULT_NAME = "generatedFiles";
   public static FOLDER_RESULT_PATH = path.resolve(Constants.FOLDER_RESULT_NAME);
   public static APPS_FILE_PATH = path.join(
     Constants.FOLDER_RESULT_PATH,
