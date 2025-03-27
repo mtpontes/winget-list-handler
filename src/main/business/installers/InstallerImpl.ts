@@ -34,7 +34,6 @@ export default class InstallerImpl implements IInstaller {
   private async installationAsync(packages: Array<AppsType>, concurrency: number): Promise<void> {
     console.log(`Starting installation of ${packages.length} packages with concurrency of ${concurrency}.`);
     const fails: Array<AppsType> = [];
-
     const queue = new Queue(concurrency);
 
     const installPromises = packages.map((pkg, index) =>

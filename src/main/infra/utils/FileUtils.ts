@@ -38,7 +38,7 @@ export default class FileUtils {
     return readFileSync(Constants.WINGET_LIST_TXT_FILE_PATH, Constants.UTF_8);
   }
 
-  static writeFails(fails: Array<AppsType>) {
+  public static writeFails(fails: Array<AppsType>) {
     const failsAsText = JSON.stringify(fails, null, 2);
     writeFileSync(this.createOutputPathJson(TypeProcess.FAIL), failsAsText);
   }

@@ -1,6 +1,6 @@
 {
   "name": "winget-handler",
-  "description": "CLI para automação e gerenciamento de pacotes Winget",
+  "description": "Cli for Winget Package Automation and Management",
   "version": "2.0.2",
   "main": "index.js",
   "type": "commonjs",
@@ -8,8 +8,8 @@
   "scripts": {
     "test": "cls && jest",
     "build-command": "pkg . --targets node16-win-x64 --output winget-handler.exe",
-    "prune": "rimraf dist arquivos_gerados winget_list.txt",
-    "clean": "rimraf dist arquivos_gerados winget_list.txt winget-handler.exe",
+    "prune": "rimraf dist generatedFiles winget_list.txt",
+    "clean": "rimraf dist generatedFiles winget_list.txt winget-handler.exe",
     "build": "npm run clean && tsc && npm run build-command",
     "build-clean": "npm run build && npm run prune"
   },

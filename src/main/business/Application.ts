@@ -10,15 +10,11 @@ import type { AppsType } from "../infra/types/AppsType";
 import type { FormattedPackagesType } from "../infra/types/FormattedPackagesType";
 
 export default class Application {
-  installer: IInstaller;
-  formatter: IFormatter;
-  processor: IProcessor;
-
-  constructor() {
-    this.installer = new InstallerImpl();
-    this.formatter = new JsonFormatterImpl();
-    this.processor = new ProcessorImpl();
-  }
+  constructor(
+    private installer: IInstaller = new InstallerImpl(),
+    private formatter: IFormatter = new JsonFormatterImpl(),
+    private processor: IProcessor = new ProcessorImpl()
+  ) { }
 
   public runGenerateFiles(): void {
     FileUtils.generateWingetListFile();

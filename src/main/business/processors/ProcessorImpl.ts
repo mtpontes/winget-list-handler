@@ -57,7 +57,7 @@ export default class ProcessorImpl implements IProcessor {
       )
     );
 
-    return { pcdApps, pcdBadApps };
+    return { pcdApps, pcdBadApps } as ProcessedPackagesType;
   }
 
   /**
@@ -71,6 +71,6 @@ export default class ProcessorImpl implements IProcessor {
    */
   public process(data: string): ProcessedPackagesType {
     const structuredData: Array<Array<string>> = this.structureReadingData(data);
-    return this.segregateAppTypes(structuredData);
+    return this.segregateAppTypes(structuredData) as ProcessedPackagesType;
   }
 }

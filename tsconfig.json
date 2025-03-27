@@ -13,7 +13,7 @@
     "moduleResolution": "node",
     "module": "CommonJS",
     "target": "ESNext",
-    "noEmitOnError": true, // -------------------
+    "noEmitOnError": true,
     "noImplicitOverride": true,
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
     "esModuleInterop": true,
@@ -25,5 +25,6 @@
     "sourceMap": true,
     "importHelpers": true,
     "experimentalDecorators": true,
+    "noImplicitAny": true
   }
 }

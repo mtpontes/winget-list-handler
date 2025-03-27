@@ -37,7 +37,6 @@ export default class CLIConst {
       Example 1: winget-handler ${CLIConst.GENERATE_FILES_ONLY.required}
       Example 2: winget-handler ${CLIConst.CONSUME_FILE.required}
       Example 3: winget-handler ${CLIConst.CONSUME_FILE.required + " " + CLIConst.CONSUME_FILE.optional.ASYNC}
-      Example 4: winget-handler ${CLIConst.CONSUME_FILE.required + " " + CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY + 5
-    }
+      Example 4: winget-handler ${CLIConst.CONSUME_FILE.required + " " + CLIConst.CONSUME_FILE.optional.ASYNC_CONCURRENCY + 5}
     `;
 }
