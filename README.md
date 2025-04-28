@@ -14,7 +14,10 @@ If you are a developer and want to contribute or customize the tool, see the [In
 
 2️⃣ **App report consumption**: consumes the reports to perform the installations.
 
-## 👤 Usage instructions
+<details>
+  <summary>
+    <h2> 👤Usage instructions</h2>    
+  </summary>
 
 ### ⚙️ Prerequisites for use
 
@@ -27,7 +30,8 @@ If you are a developer and want to contribute or customize the tool, see the [In
 2. Download the latest version of the `winget-handler.exe` file.
 3. Keep this `.exe` in an isolated directory for better use.
 
-### 1️⃣ Configure Winget
+<details>
+  <summary><h3>1️⃣ Configure Winget</h3></summary>
 
 Before you start using the solution, check if you have winget installed and configured correctly on your machine.
 
@@ -53,7 +57,12 @@ If this term is not accepted, it will not be possible to use the solution. This 
 Winget tool and has no direct relation to the application, however, this solution is based on the Winget tool and
 relies on it being properly configured to work.
 
-### 2️⃣ Generate reports before system reinstallation
+---
+
+</details>
+
+<details>
+  <summary><h3>2️⃣ Generate reports before system reinstallation</h3></summary>
 
 Before before system reinstallation, run the application report generation. These reports are necessary for the solution
 to install the current applications on the machine. In addition, it also provides a report with the list of applications that will not be installed by the solution, serving as a guideline for which apps you will need to install manually.
@@ -84,7 +93,12 @@ After that, you can reinstall the system.
 
 ---
 
-### 3️⃣ Install applications after reinstalling the system
+</details>
+
+<details>
+  <summary><h3>3️⃣ Install applications after reinstalling the system</h3></summary>
+
+###
 
 After reinstall the system, recover the `generatedFiles` directory and the `winget-handler.exe` executable.
 
@@ -126,6 +140,10 @@ Then, run one of the three commands:
 
 ---
 
+</details>
+
+</details>
+
 ## 📌 Observations
 
 This process may take a while, as it depends on the speed of the package servers and the capacity of your hardware.
@@ -139,6 +157,6 @@ This process may take a while, as it depends on the speed of the package servers
 - **Winget is not installed/configured**: Make sure Winget is installed and configured correctly.
 - **Some applications were not reinstalled**: Check the `badApps.json` file and install manually.
 - **Error running the executable**: Run as administrator and try again.
-- **The app does not find the file exec.bat**: Keep the exec.bat file at the same ``.exe`` application level level. The .bat file was the way I found to circumvent some terminal limitations. For some specific applications it is necessary to insert a second input that may vary from package to package, but when the execution is done via .BAT This second input is ignored and the winget follows the normal flow.
+- **The app does not find the file exec.bat**: Keep the exec.bat file at the same `.exe` application level level. The .bat file was the way I found to circumvent some terminal limitations. For some specific applications it is necessary to insert a second input that may vary from package to package, but when the execution is done via .BAT This second input is ignored and the winget follows the normal flow.
 
 If you encounter other problems, please open an [issue](https://github.com/mtpontes/winget-list-handler/issues) in the repository.
