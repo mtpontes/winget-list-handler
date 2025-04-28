@@ -57,8 +57,6 @@ If this term is not accepted, it will not be possible to use the solution. This 
 Winget tool and has no direct relation to the application, however, this solution is based on the Winget tool and
 relies on it being properly configured to work.
 
----
-
 </details>
 
 <details>
@@ -91,14 +89,10 @@ Copy the `generatedFiles` directory and the `winget-handler.exe` executable to a
 
 After that, you can reinstall the system.
 
----
-
 </details>
 
 <details>
   <summary><h3>3️⃣ Install applications after reinstalling the system</h3></summary>
-
-###
 
 After reinstall the system, recover the `generatedFiles` directory and the `winget-handler.exe` executable.
 
@@ -137,8 +131,6 @@ Then, run one of the three commands:
   # CMD
   winget-handler --consume-file --async-concurrency=<REPLACE_BY_A_NUMBER_FROM_1_TO_100>
   ```
-
----
 
 </details>
 
