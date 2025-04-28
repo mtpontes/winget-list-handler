@@ -142,6 +142,8 @@ Then, run one of the three commands:
 
 </details>
 
+---
+
 </details>
 
 ## 📌 Observations
