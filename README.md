@@ -138,7 +138,8 @@ Then, run one of the three commands:
 
 </details>
 
-## 📌 Observations
+<details>
+  <summary><h2>📌 Observations</h2></summary>
 
 This process may take a while, as it depends on the speed of the package servers and the capacity of your hardware.
 
@@ -146,7 +147,10 @@ This process may take a while, as it depends on the speed of the package servers
 - Asynchronous installation is faster, but the number of packages installed simultaneously can impact the overall performance of the machine, and may be limited by the write speed of the system's default storage.
 - The default for asynchronous installations is 5 simultaneous packages.
 
-## ❓ Known Issues
+</details>
+
+<details>
+  <summary><h2>❓ Known Issues</h2></summary>
 
 - **Winget is not installed/configured**: Make sure Winget is installed and configured correctly.
 - **Some applications were not reinstalled**: Check the `badApps.json` file and install manually.
@@ -154,3 +158,5 @@ This process may take a while, as it depends on the speed of the package servers
 - **The app does not find the file exec.bat**: Keep the exec.bat file at the same `.exe` application level level. The .bat file was the way I found to circumvent some terminal limitations. For some specific applications it is necessary to insert a second input that may vary from package to package, but when the execution is done via .BAT This second input is ignored and the winget follows the normal flow.
 
 If you encounter other problems, please open an [issue](https://github.com/mtpontes/winget-list-handler/issues) in the repository.
+
+</details>
