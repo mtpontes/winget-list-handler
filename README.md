@@ -166,7 +166,7 @@ If you encounter other problems, please open an [issue](https://github.com/mtpon
 
 If this tool helped you, please consider giving the project a ⭐ on GitHub. Your support helps keep it alive and improves its reach.  
   
-[👉 Give a star here](https://github.com/mtpontes/winget-list-handler)
+[👉 Give a star here](https://github.com/mtpontes/winget-list-handler/stargazers)
 
 Thanks! 👏
 </details>
