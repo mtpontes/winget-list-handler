@@ -160,3 +160,13 @@ This process may take a while, as it depends on the speed of the package servers
 If you encounter other problems, please open an [issue](https://github.com/mtpontes/winget-list-handler/issues) in the repository.
 
 </details>
+
+<details>
+  <summary><h2>⭐ Show your support!</h2></summary>
+
+If this tool helped you, please consider giving the project a ⭐ on GitHub. Your support helps keep it alive and improves its reach.  
+  
+[👉 Give a star here](https://github.com/mtpontes/winget-list-handler)
+
+Thanks! 👏
+</details>
