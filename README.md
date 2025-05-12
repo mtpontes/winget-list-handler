@@ -164,4 +164,4 @@ If you encounter other problems, please open an [issue](https://github.com/mtpon
 ## ⭐ Show your support!
 If this tool helped you, please consider giving the project a ⭐ on GitHub and sharing it with your friends. Your support helps keep it alive and increases its reach.
 
-Thanks! 👏
+Thanks!
