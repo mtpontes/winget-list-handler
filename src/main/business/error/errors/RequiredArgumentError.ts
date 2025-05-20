@@ -1,4 +1,4 @@
-import CLIUtils from "../../utils/CLIUtils";
+import CLIUtils from "../../../application/utils/CLIUtils";
 
 export default class RequiredArgumentError extends Error {
   constructor() {

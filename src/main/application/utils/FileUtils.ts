@@ -4,10 +4,10 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import Constants from "../../domain/constants/Constants";
 import FileExtensionConst from "../../domain/constants/FileExtensionConst";
 import { TypeProcess } from "../../domain/enum/TypeProcess";
-import type { AppsType } from "../types/AppsType";
-import FileNotReadableError from "../error/errors/FileNotReadableError";
-import InvalidJsonFormat from "../error/errors/InvalidJsonFormat";
-import type { FormattedPackagesType } from "../types/FormattedPackagesType";
+import type { AppsType } from "../../domain/types/AppsType";
+import FileNotReadableError from "../../business/error/errors/FileNotReadableError";
+import InvalidJsonFormat from "../../business/error/errors/InvalidJsonFormat";
+import type { FormattedPackagesType } from "../../domain/types/FormattedPackagesType";
 
 /**
  * Utility class to deal with file operations related to the Winget list manipulator.

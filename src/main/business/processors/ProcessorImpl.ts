@@ -1,7 +1,7 @@
 import IProcessor from "./IProcessor";
 import Constants from "../../domain/constants/Constants";
 import BadPackagesConst from "../../domain/constants/BadPackagesConst";
-import { ProcessedPackagesType } from "../../infra/types/ProcessedPackagesType";
+import { ProcessedPackagesType } from "../../domain/types/ProcessedPackagesType";
 
 /**
  *Class responsible for processing formatted text data, extracting useful information

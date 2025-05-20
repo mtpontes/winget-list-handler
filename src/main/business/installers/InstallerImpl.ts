@@ -3,8 +3,8 @@ import { Queue } from "async-await-queue";
 
 import type IInstaller from "./IInstaller";
 import Constants from "../../domain/constants/Constants";
-import type { ArgsType } from "../../infra/types/ArgsType";
-import type { AppsType } from "../../infra/types/AppsType";
+import type { ArgsType } from "../../domain/types/ArgsType";
+import type { AppsType } from "../../domain/types/AppsType";
 import FileUtils from "../../infra/utils/FileUtils";
 const { exec } = shelljs;
 
