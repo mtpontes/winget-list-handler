@@ -1,6 +1,5 @@
 export type ParsedArgs = {
-  command: 'generate' | 'consume' | null;
+  command: 'generate' | 'consume' | undefined;
+  options: Record<string, unknown>;
   help: boolean;
-  async: boolean;
-  concurrency: number | null;
 };

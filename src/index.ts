@@ -4,12 +4,16 @@ import { GenerateCommandImpl } from './main/application/commands/GenerateCommand
 import { ConsumeCommandImpl } from './main/application/commands/ConsumeCommandImpl.js';
 import CLIConst from './main/domain/constants/CLIConst.js';
 import GlobalErrorHandler from './main/business/error/GlobalErrorHandler.js';
-import CLIService from './main/business/service/CLIService.js';
+import type { ICommand } from './main/application/commands/ICommand.js';
+
 
 function main() {
   try {
     const parsed: ParsedArgs = ArgumentsParserUtils.parseArgs(process.argv);
-    const app = new CLIService()
+
+    const generateCommand: ICommand = new GenerateCommandImpl()
+    const consumeCommand: ICommand = new ConsumeCommandImpl(parsed)
+
 
     if (parsed.help) {
       console.log(`\n${CLIConst.EXAMPLE}\n`);
@@ -18,10 +22,10 @@ function main() {
 
     switch (parsed.command) {
       case 'generate':
-        new GenerateCommandImpl().run(app)
+        generateCommand.run()
         break;
       case 'consume':
-        new ConsumeCommandImpl(parsed).run(app)
+        consumeCommand.run()
         break;
       default:
         console.log(`\n${CLIConst.EXAMPLE}\n`);
