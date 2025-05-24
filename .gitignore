@@ -132,7 +132,7 @@ dist
 # project
 test.js
 
-apps**
+apps.*
 badApps**
 **.txt
 .vscode/

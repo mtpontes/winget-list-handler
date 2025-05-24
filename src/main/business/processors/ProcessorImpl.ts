@@ -8,6 +8,21 @@ import { ProcessedPackagesType } from "../../domain/types/ProcessedPackagesType"
  *and segregating applications with complete packages and those with absent or impaired packages.
  */
 export default class ProcessorImpl implements IProcessor {
+
+  /**
+   * Processes the formatted data, structuring and segregating applications based on their integrity.
+   *
+   * @param {string} data - A string containing the formatted data in lines.
+   *
+   * @returns {ProcessedPackagesType} An object containing two groups of applications:
+   * - `appsWithPackage`: An array of arrays of strings containing the lines representing applications with complete packages.
+   * - `appsWithIssues`: An array of arrays of strings containing the lines representing applications with missing or broken packages.
+   */
+  public process(data: string): ProcessedPackagesType {
+    const structuredData: Array<Array<string>> = this.structureReadingData(data);
+    return this.segregateAppTypes(structuredData) as ProcessedPackagesType;
+  }
+
   /**
    * Filters and structures formatted data into an array of arrays of strings.
    *
@@ -43,34 +58,20 @@ export default class ProcessorImpl implements IProcessor {
    * - `appsWithIssues`: An array of arrays of strings containing the lines representing applications with missing or broken packages.
    */
   private segregateAppTypes(data: Array<Array<string>>): ProcessedPackagesType {
-    const pcdApps: Array<Array<string>> = data.filter((line) =>
+    const pkgApps: Array<Array<string>> = data.filter((line) =>
       line.every((column) =>
         !column.trim().includes(BadPackagesConst.MISSING_PACKAGE) &&
         !column.trim().includes(BadPackagesConst.BROKEN_PACKAGE)
       )
     );
 
-    const pcdBadApps: Array<Array<string>> = data.filter((line) =>
+    const pkgBadApps: Array<Array<string>> = data.filter((line) =>
       line.some((text) =>
         text.includes(BadPackagesConst.MISSING_PACKAGE) ||
         text.includes(BadPackagesConst.BROKEN_PACKAGE)
       )
     );
 
-    return { pcdApps, pcdBadApps } as ProcessedPackagesType;
-  }
-
-  /**
-   * Processes the formatted data, structuring and segregating applications based on their integrity.
-   *
-   * @param {string} data - A string containing the formatted data in lines.
-   *
-   * @returns {ProcessedPackagesType} An object containing two groups of applications:
-   * - `appsWithPackage`: An array of arrays of strings containing the lines representing applications with complete packages.
-   * - `appsWithIssues`: An array of arrays of strings containing the lines representing applications with missing or broken packages.
-   */
-  public process(data: string): ProcessedPackagesType {
-    const structuredData: Array<Array<string>> = this.structureReadingData(data);
-    return this.segregateAppTypes(structuredData) as ProcessedPackagesType;
+    return { pkgApps, pkgBadApps } as ProcessedPackagesType;
   }
 }

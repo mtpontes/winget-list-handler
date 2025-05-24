@@ -1,4 +1,4 @@
 export type ProcessedPackagesType = {
-  pcdApps: Array<Array<string>>;
-  pcdBadApps: Array<Array<string>>;
+  pkgApps: Array<Array<string>>;
+  pkgBadApps: Array<Array<string>>;
 };

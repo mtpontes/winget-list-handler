@@ -1,4 +1,4 @@
-import { TypeProcess } from "../../../domain/enum/TypeProcess";
+import { TypeProcess } from "../../domain/enum/TypeProcess";
 
 export default class InvalidJsonFormat extends Error {
   constructor() {
