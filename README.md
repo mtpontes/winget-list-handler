@@ -8,20 +8,20 @@ In addition, if an application cannot be installed automatically, the project ge
 
 If you are a developer and want to contribute or customize the tool, see the [Instructions for Developers](https://github.com/mtpontes/winget-list-handler/blob/main/README_DEV.md) section.
 
-## 📦 CLI Commands Reference
-
-Table with the available CLI commands and their options:
-
-| Command          | Description                                                                          | Options                                                                                                                       | Usage Example                                                   |
-| ---------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `generate-files` | Generates the `apps.json` and `badapp` files based on packages recognized by Winget. | _None_                                                                                                                        | `cli generate-files`                                            |
-| `consume-file`   | Installs the applications listed in the `apps.json` file.                            | `--async`<br>Installs apps asynchronously.<br>`--async-jobs <number>`<br>Defines how many simultaneous installations (1–100). | `cli consume-file --async`<br>`cli consume-file --async-jobs 5` |
-
 ## 📌 How does it work?
 
 1️⃣ **App report generation**: generates reference files with the list of installed applications.
 
 2️⃣ **App report consumption**: consumes the reports to perform the installations.
+
+## 📦 CLI Commands Reference
+
+Table with the available CLI commands and their options:
+
+| Command          | Description                                                                                | Options                                                                                                                       | Usage Example                                           |
+| ---------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `generate-files` | Generates the `apps.json` and `badApps.json` files based on packages recognized by Winget. | _None_                                                                                                                        | `generate-files`                                        |
+| `consume-file`   | Installs the applications listed in the `apps.json` file.                                  | `--async`<br>Installs apps asynchronously.<br>`--async-jobs <number>`<br>Defines how many simultaneous installations (1–100). | `consume-file --async`<br>`consume-file --async-jobs 5` |
 
 <details>
   <summary>
@@ -147,7 +147,7 @@ Then, run one of the three commands:
 </details>
 
 <details>
-  <summary><h2>📌 Observations</h2></summary>
+  <summary><h2>📢 Observations</h2></summary>
 
 This process may take a while, as it depends on the speed of the package servers and the capacity of your hardware.
 
