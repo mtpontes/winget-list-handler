@@ -14,6 +14,15 @@ If you are a developer and want to contribute or customize the tool, see the [In
 
 2️⃣ **App report consumption**: consumes the reports to perform the installations.
 
+## 📦 CLI Commands Reference
+
+Table with the available CLI commands and their options:
+
+| Command          | Description                                                                                | Options                                                                                                                       | Usage Example                                           |
+| ---------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `generate-files` | Generates the `apps.json` and `badApps.json` files based on packages recognized by Winget. | _None_                                                                                                                        | `generate-files`                                        |
+| `consume-file`   | Installs the applications listed in the `apps.json` file.                                  | `--async`<br>Installs apps asynchronously.<br>`--async-jobs <number>`<br>Defines how many simultaneous installations (1–100). | `consume-file --async`<br>`consume-file --async-jobs 5` |
+
 <details>
   <summary>
     <h2> 👤Usage instructions</h2>    
@@ -69,10 +78,10 @@ Run the command to generate the reference files for the installed applications:
 
 ```sh
 # Powershell
-./winget-handler --generate-files
+./winget-handler generate-files
 
 # CMD
-winget-handler --generate-files
+winget-handler generate-files
 ```
 
 This will create a directory and two files where `winget-handler.exe` is running:
@@ -99,15 +108,14 @@ After reinstall the system, recover the `generatedFiles` directory and the `wing
 Then, run one of the three commands:
 
 - **Install the apps one at a time**
-
   The packages will be installed **one by one** synchronously.
 
   ```sh
   # Powershell
-  ./winget-handler --consume-file
+  ./winget-handler consume-file
 
   # CMD
-  winget-handler --consume-file
+  winget-handler consume-file
   ```
 
 - **Installs 5 apps simultaneously in a queue**
@@ -116,20 +124,20 @@ Then, run one of the three commands:
 
   ```sh
   # Powershell
-  ./winget-handler --consume-file --async
+  ./winget-handler consume-file --async
 
   # CMD
-  winget-handler --consume-file --async
+  winget-handler consume-file --async
   ```
 
 - **Allows you to define how many apps can be installed simultaneously**
 
   ```sh
   # Powershell
-  ./winget-handler --consume-file --async-concurrency=<REPLACE_BY_A_NUMBER_FROM_1_TO_100>
+  ./winget-handler consume-file --async-jobs=<NUMBER_FROM_1_TO_100>
 
   # CMD
-  winget-handler --consume-file --async-concurrency=<REPLACE_BY_A_NUMBER_FROM_1_TO_100>
+  winget-handler consume-file --async-jobs=<NUMBER_FROM_1_TO_100>
   ```
 
 </details>
@@ -139,7 +147,7 @@ Then, run one of the three commands:
 </details>
 
 <details>
-  <summary><h2>📌 Observations</h2></summary>
+  <summary><h2>📢 Observations</h2></summary>
 
 This process may take a while, as it depends on the speed of the package servers and the capacity of your hardware.
 
@@ -162,6 +170,9 @@ If you encounter other problems, please open an [issue](https://github.com/mtpon
 </details>
 
 ## ⭐ Show your support!
+
 If this tool helped you, please consider giving the project a ⭐ on GitHub and sharing it with your friends. Your support helps keep it alive and increases its reach.
 
-Thanks!
+Thanks! 👏
+
+</details>

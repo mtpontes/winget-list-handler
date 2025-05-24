@@ -3,12 +3,30 @@ import { Queue } from "async-await-queue";
 
 import type IInstaller from "./IInstaller";
 import Constants from "../../domain/constants/Constants";
-import type { ArgsType } from "../../infra/types/ArgsType";
-import type { AppsType } from "../../infra/types/AppsType";
-import FileUtils from "../../infra/utils/FileUtils";
+import type { AppsType } from "../../domain/types/AppsType";
+import FileUtils from "../../application/utils/FileUtils";
+import type { InstallerOptions } from "../../domain/types/InstallerOptions";
 const { exec } = shelljs;
 
 export default class InstallerImpl implements IInstaller {
+
+  /**
+   * Installs the packages based on the execution option (synchronous or asynchronous).
+   *
+   * @param {Array<AppsType>} packages - List of packages to be installed.
+   * @param {Object} args - Installation options.
+   * @param {boolean} args.isAsync - If true, the installation will be asynchronous.
+   * @param {number} args.concurrency - Maximum number of simultaneous installations (only for asynchronous installation).
+   * @returns {Promise<void>} A Promise that resolves when the installation is completed.
+   */
+  public async install(packages: Array<AppsType>, args: InstallerOptions): Promise<void> {
+    if (!args.async && !args.asyncJobs) {
+      this.installationSync(packages);
+    } else {
+      this.installationAsync(packages, args.asyncJobs!);
+    }
+  }
+
   /**
    * Installs the packages synchronously, one at a time.
    *
@@ -68,22 +86,5 @@ export default class InstallerImpl implements IInstaller {
 
   private indexPackages(index: number, totalPackages: number): string {
     return `[Package ${index + 1}/${totalPackages}]`;
-  }
-
-  /**
-   * Installs the packages based on the execution option (synchronous or asynchronous).
-   *
-   * @param {Array<AppsType>} packages - List of packages to be installed.
-   * @param {Object} args - Installation options.
-   * @param {boolean} args.isAsync - If true, the installation will be asynchronous.
-   * @param {number} args.concurrency - Maximum number of simultaneous installations (only for asynchronous installation).
-   * @returns {Promise<void>} A Promise that resolves when the installation is completed.
-   */
-  public async install(packages: Array<AppsType>, args: ArgsType): Promise<void> {
-    if (!args.isAsync) {
-      this.installationSync(packages);
-    } else {
-      this.installationAsync(packages, args.concurrency!);
-    }
   }
 }

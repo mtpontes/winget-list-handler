@@ -1,13 +1,12 @@
 import path from "node:path";
-import { exec } from "shelljs";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import Constants from "../../domain/constants/Constants";
 import FileExtensionConst from "../../domain/constants/FileExtensionConst";
 import { TypeProcess } from "../../domain/enum/TypeProcess";
-import type { AppsType } from "../types/AppsType";
-import FileNotReadableError from "../error/errors/FileNotReadableError";
-import InvalidJsonFormat from "../error/errors/InvalidJsonFormat";
-import type { FormattedPackagesType } from "../types/FormattedPackagesType";
+import type { AppsType } from "../../domain/types/AppsType";
+import FileNotReadableError from "../../business/errors/FileNotReadableError";
+import InvalidJsonFormat from "../../business/errors/InvalidJsonFormat";
+import type { FormattedPackagesType } from "../../domain/types/FormattedPackagesType";
 
 /**
  * Utility class to deal with file operations related to the Winget list manipulator.
@@ -19,23 +18,6 @@ export default class FileUtils {
   public static createDumpFolder(): void {
     const path = Constants.FOLDER_RESULT_PATH;
     if (!existsSync(path)) mkdirSync(path, { recursive: true });
-  }
-
-  /**
-   * Generates a file containing the list of installed applications using Winget.
-   * The output is saved at the file path defined in the constants.
-   */
-  public static generateWingetListFile(): void {
-    exec(Constants.WINGET_LIST_COMMAND);
-  }
-
-  /**
-   * Reads the Winget output file and returns its content as a string.
-   *
-   * @returns {string} The content of the Winget output file.
-   */
-  public static readWingetListFile(): string {
-    return readFileSync(Constants.WINGET_LIST_TXT_FILE_PATH, Constants.UTF_8);
   }
 
   public static writeFails(fails: Array<AppsType>) {

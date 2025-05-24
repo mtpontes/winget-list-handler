@@ -1,5 +1,5 @@
 import IFormatter from "./IFormatter.js";
-import type { AppsType as AppsType } from "../../infra/types/AppsType.js";
+import type { AppsType as AppsType } from "../../domain/types/AppsType.js";
 
 export default class JsonFormatterImpl implements IFormatter {
   /**
