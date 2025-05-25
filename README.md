@@ -6,8 +6,6 @@ This project automates the process of reinstalling applications after reinstall 
 
 In addition, if an application cannot be installed automatically, the project generates a report (`badApps.json`) indicating which apps still need to be installed manually.
 
-If you are a developer and want to contribute or customize the tool, see the [Instructions for Developers](https://github.com/mtpontes/winget-list-handler/blob/main/README_DEV.md) section.
-
 ## 📌 How does it work?
 
 1️⃣ **App report generation**: generates reference files with the list of installed applications.
