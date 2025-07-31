@@ -10,6 +10,9 @@ In addition, if an application cannot be installed automatically, the project ge
 
 2️⃣ **App report consumption**: consumes the reports to perform the installations.
 
+## Application Flow
+<p align="center"><img src="./assets/application-flow.svg" alt="Application flow"></p>
+
 ## 📦 CLI Commands Reference
 
 Table with the available CLI commands and their options:
