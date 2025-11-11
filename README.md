@@ -2,18 +2,17 @@
 
 This project automates the process of reinstalling applications after reinstall the system. Using winget, it allows you to generate a report with all applications installed on Windows (including those that were not installed via winget) and facilitates the automatic reinstallation of compatible apps.
 
-In addition, if an application cannot be installed automatically, the project generates a report (`badApps.json`) indicating which apps still need to be installed manually.
+In addition, if an application cannot be installed automatically, the project generates a report (`badApps.json`) indicating which apps still need to be installed manual
+## How does it work?
 
-## 📌 How does it work?
+**App report generation**: generates reference files with the list of installed applications.
 
-1️⃣ **App report generation**: generates reference files with the list of installed applications.
-
-2️⃣ **App report consumption**: consumes the reports to perform the installations.
+**App report consumption**: consumes the reports to perform the installations.
 
 ## Application Flow
 <p align="center"><img src="./assets/application-flow.svg" alt="Application flow"></p>
 
-## 📦 CLI Commands Reference
+## CLI Commands Reference
 
 Table with the available CLI commands and their options:
 
@@ -24,7 +23,7 @@ Table with the available CLI commands and their options:
 
 <details>
   <summary>
-    <h2> 👤Usage instructions</h2>    
+    <h2> Usage instructions</h2>    
   </summary>
 
 ### Prerequisites for use
@@ -68,7 +67,7 @@ relies on it being properly configured to work.
 </details>
 
 <details>
-  <summary><h3>2️. Generate reports before system reinstallation</h3></summary>
+  <summary><h3>2. Generate reports before system reinstallation</h3></summary>
 
 Before before system reinstallation, run the application report generation. These reports are necessary for the solution
 to install the current applications on the machine. In addition, it also provides a report with the list of applications that will not be installed by the solution, serving as a guideline for which apps you will need to install manually.
@@ -81,13 +80,13 @@ Run the command to generate the reference files for the installed applications:
 
 This will create a directory and two files where `winget-handler.exe` is running:
 
-📁 **`generatedFiles`** → Contains the application reports.
+**`generatedFiles`** → Contains the application reports.
 
-📄 **`apps.json`** → Contains only the applications that can be reinstalled automatically via winget. It is crucial for the next step and operation of the solution.
+**`apps.json`** → Contains only the applications that can be reinstalled automatically via winget. It is crucial for the next step and operation of the solution.
 
-📄 **`badApps.json`** → Lists the applications that **cannot** be reinstalled automatically, either due to lack of support in winget or due to problems with the output of the `winget list` command.
+**`badApps.json`** → Lists the applications that **cannot** be reinstalled automatically, either due to lack of support in winget or due to problems with the output of the `winget list` command.
 
-📄 **`fails.json`** → Lists the apps that presented some errors during the installation.
+**`fails.json`** → Lists the apps that presented some errors during the installation.
 
 Copy the `generatedFiles` directory and the `winget-handler.exe` executable to a safe.
 
@@ -96,7 +95,7 @@ After that, you can reinstall the system.
 </details>
 
 <details>
-  <summary><h3>3️. Install applications after reinstalling the system</h3></summary>
+  <summary><h3>3. Install applications after reinstalling the system</h3></summary>
 
 After reinstall the system, recover the `generatedFiles` directory and the `winget-handler.exe` executable.
 
@@ -130,7 +129,7 @@ Then, run one of the three commands:
 </details>
 
 <details>
-  <summary><h2>📢 Observations</h2></summary>
+  <summary><h2> Observations</h2></summary>
 
 This process may take a while, as it depends on the speed of the package servers and the capacity of your hardware.
 
@@ -141,7 +140,7 @@ This process may take a while, as it depends on the speed of the package servers
 </details>
 
 <details>
-  <summary><h2>❓ Known Issues</h2></summary>
+  <summary><h2> Known Issues</h2></summary>
 
 - **Winget is not installed/configured**: Make sure Winget is installed and configured correctly.
 - **Some applications were not reinstalled**: Check the `badApps.json` file and install manually.
@@ -153,8 +152,9 @@ If you encounter other problems, please open an [issue](https://github.com/mtpon
 </details>
 </details>
 
-## ⭐ Show your support!
+## Show your support!
 
 If this tool helped you, please consider giving the project a ⭐ on GitHub and sharing it with your friends. Your support helps keep it alive and increases its reach.
+
 
 Thanks! 👏
